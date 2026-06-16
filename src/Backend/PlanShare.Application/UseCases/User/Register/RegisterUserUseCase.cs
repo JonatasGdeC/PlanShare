@@ -12,43 +12,27 @@ using PlanShare.Exceptions;
 using PlanShare.Exceptions.ExceptionsBase;
 
 namespace PlanShare.Application.UseCases.User.Register;
-public class RegisterUserUseCase : IRegisterUserUseCase
+public class RegisterUserUseCase(
+    IMapper mapper,
+    IUnitOfWork unitOfWork,
+    IUserWriteOnlyRepository repository,
+    IUserReadOnlyRepository userReadOnlyRepository,
+    IPasswordEncripter passwordEncripter,
+    ITokenService tokenService)
+    : IRegisterUserUseCase
 {
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserReadOnlyRepository _userReadOnlyRepository;
-    private readonly IUserWriteOnlyRepository _repository;
-    private readonly IPasswordEncripter _passwordEncripter;
-    private readonly ITokenService _tokenService;
-
-    public RegisterUserUseCase(
-        IMapper mapper,
-        IUnitOfWork unitOfWork,
-        IUserWriteOnlyRepository repository,
-        IUserReadOnlyRepository userReadOnlyRepository,
-        IPasswordEncripter passwordEncripter,
-        ITokenService tokenService)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _userReadOnlyRepository = userReadOnlyRepository;
-        _repository = repository;
-        _passwordEncripter = passwordEncripter;
-        _tokenService = tokenService;
-    }
-
     public async Task<ResponseRegisteredUserJson> Execute(RequestRegisterUserJson request)
     {
         await Validate(request: request);
 
-        Domain.Entities.User? user = _mapper.Map<Domain.Entities.User>(source: request);
-        user.Password = _passwordEncripter.Encrypt(password: request.Password);
+        Domain.Entities.User? user = mapper.Map<Domain.Entities.User>(source: request);
+        user.Password = passwordEncripter.Encrypt(password: request.Password);
 
-        await _repository.Add(user: user);
+        await repository.Add(user: user);
 
-        await _unitOfWork.Commit();
+        await unitOfWork.Commit();
 
-        TokensDto tokens = await _tokenService.GenerateTokens(user: user);
+        TokensDto tokens = await tokenService.GenerateTokens(user: user);
 
         return new()
         {
@@ -65,7 +49,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
     {
         ValidationResult? result = new RegisterUserValidator().Validate(instance: request);
 
-        bool emailExist = await _userReadOnlyRepository.ExistActiveUserWithEmail(email: request.Email);
+        bool emailExist = await userReadOnlyRepository.ExistActiveUserWithEmail(email: request.Email);
         if (emailExist)
             result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
 

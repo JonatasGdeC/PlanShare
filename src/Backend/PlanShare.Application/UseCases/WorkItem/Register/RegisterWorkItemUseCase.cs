@@ -8,28 +8,18 @@ using PlanShare.Domain.Repositories.WorkItem;
 using PlanShare.Exceptions.ExceptionsBase;
 
 namespace PlanShare.Application.UseCases.WorkItem.Register;
-public class RegisterWorkItemUseCase : IRegisterWorkItemUseCase
+public class RegisterWorkItemUseCase(IMapper mapper, IUnitOfWork unitOfWork, IWorkItemWriteOnlyRepository repository)
+    : IRegisterWorkItemUseCase
 {
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IWorkItemWriteOnlyRepository _repository;
-
-    public RegisterWorkItemUseCase(IMapper mapper, IUnitOfWork unitOfWork, IWorkItemWriteOnlyRepository repository)
-    {
-        _mapper = mapper;
-        _unitOfWork = unitOfWork;
-        _repository = repository;
-    }
-
     public async Task<ResponseRegisteredWorkItemJson> Execute(RequestRegisterWorkItemJson request)
     {
         await Validate(request: request);
 
-        Domain.Entities.WorkItem? entity = _mapper.Map<Domain.Entities.WorkItem>(source: request);
+        Domain.Entities.WorkItem? entity = mapper.Map<Domain.Entities.WorkItem>(source: request);
 
-        await _repository.Add(workItem: entity);
+        await repository.Add(workItem: entity);
 
-        await _unitOfWork.Commit();
+        await unitOfWork.Commit();
 
         return new()
         {

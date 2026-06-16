@@ -3,21 +3,12 @@ using PlanShare.Communication.Responses;
 using PlanShare.Domain.Services.LoggedUser;
 
 namespace PlanShare.Application.UseCases.User.Profile;
-public class GetUserProfileUseCase : IGetUserProfileUseCase
+public class GetUserProfileUseCase(ILoggedUser loggedUser, IMapper mapper) : IGetUserProfileUseCase
 {
-    private readonly ILoggedUser _loggedUser;
-    private readonly IMapper _mapper;
-
-    public GetUserProfileUseCase(ILoggedUser loggedUser, IMapper mapper)
-    {
-        _loggedUser = loggedUser;
-        _mapper = mapper;
-    }
-
     public async Task<ResponseUserProfileJson> Execute()
     {
-        Domain.Entities.User user = await _loggedUser.Get();
+        Domain.Entities.User user = await loggedUser.Get();
 
-        return _mapper.Map<ResponseUserProfileJson>(source: user);
+        return mapper.Map<ResponseUserProfileJson>(source: user);
     }
 }

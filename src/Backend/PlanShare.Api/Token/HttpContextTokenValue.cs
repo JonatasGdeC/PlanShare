@@ -2,15 +2,11 @@
 
 namespace PlanShare.Api.Token;
 
-public class HttpContextTokenValue : ITokenProvider
+public class HttpContextTokenValue(IHttpContextAccessor httpContext) : ITokenProvider
 {
-    private readonly IHttpContextAccessor _httpContext;
-
-    public HttpContextTokenValue(IHttpContextAccessor httpContext) => _httpContext = httpContext;
-
     public string Value()
     {
-        string authentication = _httpContext.HttpContext!.Request.Headers.Authorization.ToString();
+        string authentication = httpContext.HttpContext!.Request.Headers.Authorization.ToString();
 
         return authentication["Bearer ".Length..].Trim();
     }

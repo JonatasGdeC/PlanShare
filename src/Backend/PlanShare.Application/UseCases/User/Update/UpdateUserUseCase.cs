@@ -8,39 +8,27 @@ using PlanShare.Exceptions;
 using PlanShare.Exceptions.ExceptionsBase;
 
 namespace PlanShare.Application.UseCases.User.Update;
-public class UpdateUserUseCase : IUpdateUserUseCase
+public class UpdateUserUseCase(
+    ILoggedUser loggedUser,
+    IUserUpdateOnlyRepository repository,
+    IUserReadOnlyRepository userReadOnlyRepository,
+    IUnitOfWork unitOfWork)
+    : IUpdateUserUseCase
 {
-    private readonly ILoggedUser _loggedUser;
-    private readonly IUserUpdateOnlyRepository _repository;
-    private readonly IUserReadOnlyRepository _userReadOnlyRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public UpdateUserUseCase(
-        ILoggedUser loggedUser,
-        IUserUpdateOnlyRepository repository,
-        IUserReadOnlyRepository userReadOnlyRepository,
-        IUnitOfWork unitOfWork)
-    {
-        _loggedUser = loggedUser;
-        _repository = repository;
-        _unitOfWork = unitOfWork;
-        _userReadOnlyRepository = userReadOnlyRepository;
-    }
-
     public async Task Execute(RequestUpdateUserJson request)
     {
-        Domain.Entities.User loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser1 = await loggedUser.Get();
 
-        await Validate(request: request, currentEmail: loggedUser.Email);
+        await Validate(request: request, currentEmail: loggedUser1.Email);
 
-        Domain.Entities.User user = await _repository.GetById(id: loggedUser.Id);
+        Domain.Entities.User user = await repository.GetById(id: loggedUser1.Id);
 
         user.Name = request.Name;
         user.Email = request.Email;
 
-        _repository.Update(user: user);
+        repository.Update(user: user);
 
-        await _unitOfWork.Commit();
+        await unitOfWork.Commit();
     }
 
     private async Task Validate(RequestUpdateUserJson request, string currentEmail)
@@ -51,7 +39,7 @@ public class UpdateUserUseCase : IUpdateUserUseCase
 
         if (currentEmail.Equals(value: request.Email).IsFalse())
         {
-            bool userExist = await _userReadOnlyRepository.ExistActiveUserWithEmail(email: request.Email);
+            bool userExist = await userReadOnlyRepository.ExistActiveUserWithEmail(email: request.Email);
             if (userExist)
                 result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
         }

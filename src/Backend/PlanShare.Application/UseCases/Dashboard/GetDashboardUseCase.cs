@@ -5,32 +5,24 @@ using PlanShare.Domain.Repositories.WorkItem;
 using PlanShare.Domain.Services.LoggedUser;
 
 namespace PlanShare.Application.UseCases.Dashboard;
-public class GetDashboardUseCase : IGetDashboardUseCase
+public class GetDashboardUseCase(
+    ILoggedUser user,
+    IWorkItemReadOnlyRepository workItemRepository,
+    IMapper mapper,
+    IPersonAssociationReadOnlyRepository personAssociationRepository)
+    : IGetDashboardUseCase
 {
-    private readonly IMapper _mapper;
-    private readonly ILoggedUser _loggedUser;
-    private readonly IWorkItemReadOnlyRepository _workItemRepository;
-    private readonly IPersonAssociationReadOnlyRepository _personAssociationRepository;
-
-    public GetDashboardUseCase(ILoggedUser loggedUser, IWorkItemReadOnlyRepository workItemRepository, IMapper mapper, IPersonAssociationReadOnlyRepository personAssociationRepository)
-    {
-        _mapper = mapper;
-        _loggedUser = loggedUser;
-        _workItemRepository = workItemRepository;
-        _personAssociationRepository = personAssociationRepository;
-    }
-
     public async Task<ResponseDashboardJson> Execute()
     {
-        Domain.Entities.User loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await user.Get();
 
-        List<Domain.Entities.WorkItem> workItems = await _workItemRepository.GetAll(user: loggedUser);
-        List<Domain.Entities.User> associations = await _personAssociationRepository.GetPersonAssociationsForUser(user: loggedUser);
+        List<Domain.Entities.WorkItem> workItems = await workItemRepository.GetAll(user: loggedUser);
+        List<Domain.Entities.User> associations = await personAssociationRepository.GetPersonAssociationsForUser(user: loggedUser);
 
         return new ResponseDashboardJson
         {
-            WorkItems = _mapper.Map<List<ResponseShortWorkItemJson>>(source: workItems),
-            Friends = _mapper.Map<List<ResponseAssigneeJson>>(source: associations)
+            WorkItems = mapper.Map<List<ResponseShortWorkItemJson>>(source: workItems),
+            Friends = mapper.Map<List<ResponseAssigneeJson>>(source: associations)
         };
     }
 }

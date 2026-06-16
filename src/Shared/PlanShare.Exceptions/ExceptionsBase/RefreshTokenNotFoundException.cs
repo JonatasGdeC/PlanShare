@@ -2,10 +2,8 @@
 
 namespace PlanShare.Exceptions.ExceptionsBase;
 
-public class RefreshTokenNotFoundException : PlanShareException
+public class RefreshTokenNotFoundException() : PlanShareException(message: ResourceMessagesException.INVALID_SESSION)
 {
-    public RefreshTokenNotFoundException() : base(message: ResourceMessagesException.INVALID_SESSION) { }
-
     public override IList<string> GetErrorMessages() => [Message];
 
     public override HttpStatusCode GetStatusCode() => HttpStatusCode.Unauthorized;

@@ -5,36 +5,24 @@ using PlanShare.Exceptions;
 using PlanShare.Exceptions.ExceptionsBase;
 
 namespace PlanShare.Application.UseCases.WorkItem.Delete;
-public class DeleteWorkItemUseCase : IDeleteWorkItemUseCase
+public class DeleteWorkItemUseCase(
+    ILoggedUser user,
+    IWorkItemReadOnlyRepository repositoryRead,
+    IWorkItemWriteOnlyRepository repositoryWrite,
+    IUnitOfWork unitOfWork)
+    : IDeleteWorkItemUseCase
 {
-    private readonly ILoggedUser _loggedUser;
-    private readonly IWorkItemReadOnlyRepository _repositoryRead;
-    private readonly IWorkItemWriteOnlyRepository _repositoryWrite;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DeleteWorkItemUseCase(
-        ILoggedUser loggedUser,
-        IWorkItemReadOnlyRepository repositoryRead,
-        IWorkItemWriteOnlyRepository repositoryWrite,
-        IUnitOfWork unitOfWork)
-    {
-        _loggedUser = loggedUser;
-        _repositoryRead = repositoryRead;
-        _repositoryWrite = repositoryWrite;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task Execute(Guid workItemId)
     {
-        Domain.Entities.User loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await user.Get();
 
-        Domain.Entities.WorkItem? workItem = await _repositoryRead.GetById(user: loggedUser, id: workItemId);
+        Domain.Entities.WorkItem? workItem = await repositoryRead.GetById(user: loggedUser, id: workItemId);
 
         if(workItem is null)
             throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
 
-        await _repositoryWrite.Delete(id: workItemId);
+        await repositoryWrite.Delete(id: workItemId);
 
-        await _unitOfWork.Commit();
+        await unitOfWork.Commit();
     }
 }

@@ -9,37 +9,25 @@ using PlanShare.Exceptions;
 using PlanShare.Exceptions.ExceptionsBase;
 
 namespace PlanShare.Application.UseCases.User.ChangePassword;
-public class ChangePasswordUseCase : IChangePasswordUseCase
+public class ChangePasswordUseCase(
+    ILoggedUser loggedUser,
+    IPasswordEncripter passwordEncripter,
+    IUserUpdateOnlyRepository repository,
+    IUnitOfWork unitOfWork)
+    : IChangePasswordUseCase
 {
-    private readonly ILoggedUser _loggedUser;
-    private readonly IUserUpdateOnlyRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IPasswordEncripter _passwordEncripter;
-
-    public ChangePasswordUseCase(
-        ILoggedUser loggedUser,
-        IPasswordEncripter passwordEncripter,
-        IUserUpdateOnlyRepository repository,
-        IUnitOfWork unitOfWork)
-    {
-        _loggedUser = loggedUser;
-        _repository = repository;
-        _unitOfWork = unitOfWork;
-        _passwordEncripter = passwordEncripter;
-    }
-
     public async Task Execute(RequestChangePasswordJson request)
     {
-        Domain.Entities.User loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser1 = await loggedUser.Get();
 
-        Validate(request: request, loggedUser: loggedUser);
+        Validate(request: request, loggedUser: loggedUser1);
 
-        Domain.Entities.User user = await _repository.GetById(id: loggedUser.Id);
-        user.Password = _passwordEncripter.Encrypt(password: request.NewPassword);
+        Domain.Entities.User user = await repository.GetById(id: loggedUser1.Id);
+        user.Password = passwordEncripter.Encrypt(password: request.NewPassword);
 
-        _repository.Update(user: user);
+        repository.Update(user: user);
 
-        await _unitOfWork.Commit();
+        await unitOfWork.Commit();
     }
 
     private void Validate(RequestChangePasswordJson request, Domain.Entities.User loggedUser)
@@ -48,7 +36,7 @@ public class ChangePasswordUseCase : IChangePasswordUseCase
 
         ValidationResult? result = validator.Validate(instance: request);
 
-        bool passwordMatch = _passwordEncripter.IsValid(password: request.Password, passwordHash: loggedUser.Password);
+        bool passwordMatch = passwordEncripter.IsValid(password: request.Password, passwordHash: loggedUser.Password);
 
         if (passwordMatch.IsFalse())
             result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.PASSWORD_DIFFERENT_CURRENT_PASSWORD));

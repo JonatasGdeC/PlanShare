@@ -4,31 +4,21 @@ using PlanShare.Domain.Repositories.WorkItem;
 using PlanShare.Domain.Services.LoggedUser;
 
 namespace PlanShare.Application.UseCases.WorkItem.GetAll;
-public class GetAllWorkItemUseCase : IGetAllWorkItemUseCase
+public class GetAllWorkItemUseCase(
+    ILoggedUser user,
+    IMapper mapper,
+    IWorkItemReadOnlyRepository repository)
+    : IGetAllWorkItemUseCase
 {
-    private readonly ILoggedUser _loggedUser;
-    private readonly IMapper _mapper;
-    private readonly IWorkItemReadOnlyRepository _repository;
-
-    public GetAllWorkItemUseCase(
-        ILoggedUser loggedUser,
-        IMapper mapper,
-        IWorkItemReadOnlyRepository repository)
-    {
-        _mapper = mapper;
-        _repository = repository;
-        _loggedUser = loggedUser;
-    }
-
     public async Task<ResponseWorkItemsJson> Execute()
     {
-        Domain.Entities.User loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await user.Get();
 
-        List<Domain.Entities.WorkItem> workItem = await _repository.GetAll(user: loggedUser);
+        List<Domain.Entities.WorkItem> workItem = await repository.GetAll(user: loggedUser);
 
         return new ResponseWorkItemsJson
         {
-            WorkItems = _mapper.Map<List<ResponseShortWorkItemJson>>(source: workItem)
+            WorkItems = mapper.Map<List<ResponseShortWorkItemJson>>(source: workItem)
         };
     }
 }

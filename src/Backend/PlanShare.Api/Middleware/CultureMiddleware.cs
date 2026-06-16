@@ -3,12 +3,8 @@ using System.Globalization;
 
 namespace PlanShare.Api.Middleware;
 
-public class CultureMiddleware
+public class CultureMiddleware(RequestDelegate next)
 {
-    readonly RequestDelegate _next;
-
-    public CultureMiddleware(RequestDelegate next) => _next = next;
-
     public async Task Invoke(HttpContext context)
     {
         CultureInfo[] supportedLanguages = CultureInfo.GetCultures(types: CultureTypes.AllCultures);
@@ -23,6 +19,6 @@ public class CultureMiddleware
         CultureInfo.CurrentCulture = cultureInfo;
         CultureInfo.CurrentUICulture = cultureInfo;
 
-        await _next(context: context);
+        await next(context: context);
     }
 }

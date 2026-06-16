@@ -1,11 +1,7 @@
 ﻿using PlanShare.Domain.Repositories;
 
 namespace PlanShare.Infrastructure.DataAccess;
-internal sealed class UnitOfWork : IUnitOfWork
+internal sealed class UnitOfWork(PlanShareDbContext dbContext) : IUnitOfWork
 {
-    private readonly PlanShareDbContext _dbContext;
-
-    public UnitOfWork(PlanShareDbContext dbContext) => _dbContext = dbContext;
-
-    public async Task Commit() => await _dbContext.SaveChangesAsync();
+    public async Task Commit() => await dbContext.SaveChangesAsync();
 }

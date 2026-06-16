@@ -6,30 +6,20 @@ using PlanShare.Exceptions;
 using PlanShare.Exceptions.ExceptionsBase;
 
 namespace PlanShare.Application.UseCases.WorkItem.GetById;
-public class GetByIdWorkItemUseCase : IGetByIdWorkItemUseCase
+public class GetByIdWorkItemUseCase(
+    ILoggedUser user,
+    IMapper mapper,
+    IWorkItemReadOnlyRepository repository)
+    : IGetByIdWorkItemUseCase
 {
-    private readonly ILoggedUser _loggedUser;
-    private readonly IMapper _mapper;
-    private readonly IWorkItemReadOnlyRepository _repository;
-
-    public GetByIdWorkItemUseCase(
-        ILoggedUser loggedUser,
-        IMapper mapper,
-        IWorkItemReadOnlyRepository repository)
-    {
-        _mapper = mapper;
-        _repository = repository;
-        _loggedUser = loggedUser;
-    }
-
     public async Task<ResponseWorkItemJson> Execute(Guid workItemId)
     {
-        Domain.Entities.User loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await user.Get();
 
-        Domain.Entities.WorkItem? workItem = await _repository.GetById(user: loggedUser, id: workItemId);
+        Domain.Entities.WorkItem? workItem = await repository.GetById(user: loggedUser, id: workItemId);
         if (workItem is null)
             throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
 
-        return _mapper.Map<ResponseWorkItemJson>(source: workItem);
+        return mapper.Map<ResponseWorkItemJson>(source: workItem);
     }
 }

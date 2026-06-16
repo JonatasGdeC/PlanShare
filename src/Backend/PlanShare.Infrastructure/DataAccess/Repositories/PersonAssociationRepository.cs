@@ -3,15 +3,11 @@ using PlanShare.Domain.Entities;
 using PlanShare.Domain.Repositories.Association;
 
 namespace PlanShare.Infrastructure.DataAccess.Repositories;
-internal sealed class PersonAssociationRepository : IPersonAssociationReadOnlyRepository
+internal sealed class PersonAssociationRepository(PlanShareDbContext dbContext) : IPersonAssociationReadOnlyRepository
 {
-    private readonly PlanShareDbContext _dbContext;
-
-    public PersonAssociationRepository(PlanShareDbContext dbContext) => _dbContext = dbContext;
-
     public async Task<List<User>> GetPersonAssociationsForUser(User user)
     {
-        List<PersonAssociation> associations = await _dbContext.PersonAssociations
+        List<PersonAssociation> associations = await dbContext.PersonAssociations
             .AsNoTracking()
             .Include(navigationPropertyPath: association => association.AssociatedPerson)
             .Include(navigationPropertyPath: association => association.Person)

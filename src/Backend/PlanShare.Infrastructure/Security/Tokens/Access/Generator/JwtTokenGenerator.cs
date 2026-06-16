@@ -6,17 +6,9 @@ using System.Security.Claims;
 
 namespace PlanShare.Infrastructure.Security.Tokens.Access.Generator;
 
-internal sealed class JwtTokenGenerator : JwtTokenHandler, IAccessTokenGenerator
+internal sealed class JwtTokenGenerator(uint expirationTimeMinutes, string signingKey)
+    : JwtTokenHandler, IAccessTokenGenerator
 {
-    private readonly uint _expirationTimeMinutes;
-    private readonly string _signingKey;
-
-    public JwtTokenGenerator(uint expirationTimeMinutes, string signingKey)
-    {
-        _expirationTimeMinutes = expirationTimeMinutes;
-        _signingKey = signingKey;
-    }
-
     public (string token, Guid accessTokenIdentifier) Generate(User user)
     {
         Guid accessTokenIdentifier = Guid.NewGuid();
@@ -29,9 +21,9 @@ internal sealed class JwtTokenGenerator : JwtTokenHandler, IAccessTokenGenerator
 
         SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
         {
-            Expires = DateTime.UtcNow.AddMinutes(value: _expirationTimeMinutes),
+            Expires = DateTime.UtcNow.AddMinutes(value: expirationTimeMinutes),
             Subject = new ClaimsIdentity(claims: claims),
-            SigningCredentials = new SigningCredentials(key: SecurityKey(signingKey: _signingKey), algorithm: SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(key: SecurityKey(signingKey: signingKey), algorithm: SecurityAlgorithms.HmacSha256Signature)
         };
 
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

@@ -4,12 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace PlanShare.Infrastructure.Security.Tokens.Access.Validator;
 
-internal sealed class JwtTokenValidator : JwtTokenHandler, IAccessTokenValidator
+internal sealed class JwtTokenValidator(string signingKey) : JwtTokenHandler, IAccessTokenValidator
 {
-    private readonly string _signingKey;
-
-    public JwtTokenValidator(string signingKey) => _signingKey = signingKey;
-
     public Guid GetAccessTokenIdentifier(string token)
     {
         string identifier = GetClaimValue(token: token, claimType: JwtRegisteredClaimNames.Jti);
@@ -30,7 +26,7 @@ internal sealed class JwtTokenValidator : JwtTokenHandler, IAccessTokenValidator
         {
             ValidateAudience = false,
             ValidateIssuer = false,
-            IssuerSigningKey = SecurityKey(signingKey: _signingKey),
+            IssuerSigningKey = SecurityKey(signingKey: signingKey),
             ClockSkew = new TimeSpan(ticks: 0)
         };
 
