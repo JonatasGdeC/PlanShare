@@ -31,11 +31,7 @@ public static class DependencyInjectionExtension
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.ConnectionString();
-
-        services.AddDbContext<PlanShareDbContext>(optionsAction: dbContextOptions =>
-        {
-            dbContextOptions.UseMySql(connectionString: connectionString, serverVersion: ServerVersion.AutoDetect(connectionString: connectionString));
-        });
+        services.AddDbContext<PlanShareDbContext>(optionsAction: options => options.UseNpgsql(connectionString: connectionString));
     }
 
     private static void AddRepositories(IServiceCollection services)

@@ -5,6 +5,7 @@ using PlanShare.Api.Token;
 using PlanShare.Application;
 using PlanShare.Domain.Security.Tokens;
 using PlanShare.Infrastructure;
+using PlanShare.Infrastructure.DataAccess.Migrations;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args: args);
 
@@ -67,4 +68,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+await MigrateDatabase();
+
 app.Run();
+
+async Task MigrateDatabase()  
+{  
+    await using AsyncServiceScope scope = app.Services.CreateAsyncScope();  
+    await DataBaseMigration.MigrateDatabase(serviceProvider: scope.ServiceProvider);  
+}
