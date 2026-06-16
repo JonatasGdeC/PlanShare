@@ -7,12 +7,12 @@ public class UpdateUserValidator : AbstractValidator<RequestUpdateUserJson>
 {
     public UpdateUserValidator()
     {
-        RuleFor(user => user.Name).NotEmpty().WithMessage(ResourceMessagesException.NAME_EMPTY);
-        RuleFor(user => user.Email)
+        RuleFor(expression: user => user.Name).NotEmpty().WithMessage(errorMessage: ResourceMessagesException.NAME_EMPTY);
+        RuleFor(expression: user => user.Email)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.EMAIL_EMPTY)
+            .WithMessage(errorMessage: ResourceMessagesException.EMAIL_EMPTY)
             .EmailAddress()
-            .When(user => string.IsNullOrWhiteSpace(user.Email) == false, ApplyConditionTo.CurrentValidator)
-            .WithMessage(ResourceMessagesException.EMAIL_INVALID);
+            .When(predicate: user => string.IsNullOrWhiteSpace(value: user.Email) == false, applyConditionTo: ApplyConditionTo.CurrentValidator)
+            .WithMessage(errorMessage: ResourceMessagesException.EMAIL_INVALID);
     }
 }

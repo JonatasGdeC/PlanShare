@@ -21,20 +21,20 @@ public static class DependencyInjectionExtension
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        AddRepositories(services);
-        AddLoggedUser(services);
-        AddTokenHandlers(services, configuration);
-        AddPasswordEncripter(services);
-        AddDbContext(services, configuration);
+        AddRepositories(services: services);
+        AddLoggedUser(services: services);
+        AddTokenHandlers(services: services, configuration: configuration);
+        AddPasswordEncripter(services: services);
+        AddDbContext(services: services, configuration: configuration);
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.ConnectionString();
+        string connectionString = configuration.ConnectionString();
 
-        services.AddDbContext<PlanShareDbContext>(dbContextOptions =>
+        services.AddDbContext<PlanShareDbContext>(optionsAction: dbContextOptions =>
         {
-            dbContextOptions.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            dbContextOptions.UseMySql(connectionString: connectionString, serverVersion: ServerVersion.AutoDetect(connectionString: connectionString));
         });
     }
 
@@ -62,10 +62,10 @@ public static class DependencyInjectionExtension
 
     private static void AddTokenHandlers(IServiceCollection services, IConfiguration configuration)
     {
-        var expirationTimeMinutes = configuration.GetValue<uint>("Settings:Jwt:ExpiresMinutes");
-        var signingKey = configuration.GetValue<string>("Settings:Jwt:SigningKey")!;
+        uint expirationTimeMinutes = configuration.GetValue<uint>(key: "Settings:Jwt:ExpiresMinutes");
+        string signingKey = configuration.GetValue<string>(key: "Settings:Jwt:SigningKey")!;
 
-        services.AddScoped<IAccessTokenValidator>(option => new JwtTokenValidator(signingKey));
-        services.AddScoped<IAccessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signingKey));
+        services.AddScoped<IAccessTokenValidator>(implementationFactory: option => new JwtTokenValidator(signingKey: signingKey));
+        services.AddScoped<IAccessTokenGenerator>(implementationFactory: option => new JwtTokenGenerator(expirationTimeMinutes: expirationTimeMinutes, signingKey: signingKey));
     }
 }

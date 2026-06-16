@@ -10,7 +10,7 @@ public class HttpContextTokenValue : ITokenProvider
 
     public string Value()
     {
-        var authentication = _httpContext.HttpContext!.Request.Headers.Authorization.ToString();
+        string authentication = _httpContext.HttpContext!.Request.Headers.Authorization.ToString();
 
         return authentication["Bearer ".Length..].Trim();
     }

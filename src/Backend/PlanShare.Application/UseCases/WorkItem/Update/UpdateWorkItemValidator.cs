@@ -7,7 +7,7 @@ public class UpdateWorkItemValidator : AbstractValidator<RequestUpdateWorkItemJs
 {
     public UpdateWorkItemValidator()
     {
-        RuleFor(request => request.Title).NotEmpty().WithMessage(ResourceMessagesException.NAME_EMPTY);
-        RuleFor(request => request.DueDate.Date).GreaterThanOrEqualTo(DateTime.UtcNow.Date);
+        RuleFor(expression: request => request.Title).NotEmpty().WithMessage(errorMessage: ResourceMessagesException.NAME_EMPTY);
+        RuleFor(expression: request => request.DueDate.Date).GreaterThanOrEqualTo(valueToCompare: DateTime.UtcNow.Date);
     }
 }

@@ -4,7 +4,7 @@ namespace PlanShare.Exceptions.ExceptionsBase;
 
 public class RefreshTokenExpiredException : PlanShareException
 {
-    public RefreshTokenExpiredException() : base(ResourceMessagesException.EXPIRED_SESSION) { }
+    public RefreshTokenExpiredException() : base(message: ResourceMessagesException.EXPIRED_SESSION) { }
 
     public override IList<string> GetErrorMessages() => [Message];
 

@@ -24,12 +24,12 @@ public class GetByIdWorkItemUseCase : IGetByIdWorkItemUseCase
 
     public async Task<ResponseWorkItemJson> Execute(Guid workItemId)
     {
-        var loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await _loggedUser.Get();
 
-        var workItem = await _repository.GetById(loggedUser, workItemId);
+        Domain.Entities.WorkItem? workItem = await _repository.GetById(user: loggedUser, id: workItemId);
         if (workItem is null)
-            throw new NotFoundException(ResourceMessagesException.WORK_ITEM_NOT_FOUND);
+            throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
 
-        return _mapper.Map<ResponseWorkItemJson>(workItem);
+        return _mapper.Map<ResponseWorkItemJson>(source: workItem);
     }
 }

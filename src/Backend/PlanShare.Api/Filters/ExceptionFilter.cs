@@ -11,20 +11,20 @@ public class ExceptionFilter : IExceptionFilter
     public void OnException(ExceptionContext context)
     {
         if (context.Exception is PlanShareException planShareException)
-            HandleProjectException(planShareException, context);
+            HandleProjectException(planShareException: planShareException, context: context);
         else
-            ThrowUnknowError(context);
+            ThrowUnknowError(context: context);
     }
 
     private static void HandleProjectException(PlanShareException planShareException, ExceptionContext context)
     {
         context.HttpContext.Response.StatusCode = (int)planShareException.GetStatusCode();
-        context.Result = new ObjectResult(new ResponseErrorJson(planShareException.GetErrorMessages()));
+        context.Result = new ObjectResult(value: new ResponseErrorJson(errors: planShareException.GetErrorMessages()));
     }
 
     private static void ThrowUnknowError(ExceptionContext context)
     {
         context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        context.Result = new ObjectResult(new ResponseErrorJson(ResourceMessagesException.UNKNOWN_ERROR));
+        context.Result = new ObjectResult(value: new ResponseErrorJson(error: ResourceMessagesException.UNKNOWN_ERROR));
     }
 }

@@ -12,39 +12,39 @@ internal sealed class JwtTokenValidator : JwtTokenHandler, IAccessTokenValidator
 
     public Guid GetAccessTokenIdentifier(string token)
     {
-        var identifier = GetClaimValue(token, JwtRegisteredClaimNames.Jti);
+        string identifier = GetClaimValue(token: token, claimType: JwtRegisteredClaimNames.Jti);
 
-        return Guid.Parse(identifier);
+        return Guid.Parse(input: identifier);
     }
 
     public Guid GetUserIdentifier(string token)
     {
-        var identifier = GetClaimValue(token, JwtRegisteredClaimNames.NameId);
+        string identifier = GetClaimValue(token: token, claimType: JwtRegisteredClaimNames.NameId);
 
-        return Guid.Parse(identifier);
+        return Guid.Parse(input: identifier);
     }
 
     public void Validate(string token)
     {
-        var validationParameters = new TokenValidationParameters()
+        TokenValidationParameters validationParameters = new TokenValidationParameters()
         {
             ValidateAudience = false,
             ValidateIssuer = false,
-            IssuerSigningKey = SecurityKey(_signingKey),
-            ClockSkew = new TimeSpan(0)
+            IssuerSigningKey = SecurityKey(signingKey: _signingKey),
+            ClockSkew = new TimeSpan(ticks: 0)
         };
 
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-        tokenHandler.ValidateToken(token, validationParameters, out _);
+        tokenHandler.ValidateToken(token: token, validationParameters: validationParameters, validatedToken: out _);
     }
 
     private static string GetClaimValue(string token, string claimType)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-        var jwtToken = tokenHandler.ReadJwtToken(token);
+        JwtSecurityToken? jwtToken = tokenHandler.ReadJwtToken(token: token);
 
-        return jwtToken.Claims.First(claim => claim.Type == claimType).Value;
+        return jwtToken.Claims.First(predicate: claim => claim.Type == claimType).Value;
     }
 }

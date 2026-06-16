@@ -30,33 +30,33 @@ public class ChangePasswordUseCase : IChangePasswordUseCase
 
     public async Task Execute(RequestChangePasswordJson request)
     {
-        var loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await _loggedUser.Get();
 
-        Validate(request, loggedUser);
+        Validate(request: request, loggedUser: loggedUser);
 
-        var user = await _repository.GetById(loggedUser.Id);
-        user.Password = _passwordEncripter.Encrypt(request.NewPassword);
+        Domain.Entities.User user = await _repository.GetById(id: loggedUser.Id);
+        user.Password = _passwordEncripter.Encrypt(password: request.NewPassword);
 
-        _repository.Update(user);
+        _repository.Update(user: user);
 
         await _unitOfWork.Commit();
     }
 
     private void Validate(RequestChangePasswordJson request, Domain.Entities.User loggedUser)
     {
-        var validator = new ChangePasswordValidator();
+        ChangePasswordValidator validator = new ChangePasswordValidator();
 
-        var result = validator.Validate(request);
+        ValidationResult? result = validator.Validate(instance: request);
 
-        var passwordMatch = _passwordEncripter.IsValid(request.Password, loggedUser.Password);
+        bool passwordMatch = _passwordEncripter.IsValid(password: request.Password, passwordHash: loggedUser.Password);
 
         if (passwordMatch.IsFalse())
-            result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.PASSWORD_DIFFERENT_CURRENT_PASSWORD));
+            result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.PASSWORD_DIFFERENT_CURRENT_PASSWORD));
 
         if (result.IsValid.IsFalse())
         {
-            var errors = result.Errors.Select(e => e.ErrorMessage).ToList();
-            throw new ErrorOnValidationException(errors);
+            List<string> errors = result.Errors.Select(selector: e => e.ErrorMessage).ToList();
+            throw new ErrorOnValidationException(listErrors: errors);
         }
     }
 }

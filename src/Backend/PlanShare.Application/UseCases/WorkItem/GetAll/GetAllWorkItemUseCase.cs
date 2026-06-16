@@ -22,13 +22,13 @@ public class GetAllWorkItemUseCase : IGetAllWorkItemUseCase
 
     public async Task<ResponseWorkItemsJson> Execute()
     {
-        var loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await _loggedUser.Get();
 
-        var workItem = await _repository.GetAll(loggedUser);
+        List<Domain.Entities.WorkItem> workItem = await _repository.GetAll(user: loggedUser);
 
         return new ResponseWorkItemsJson
         {
-            WorkItems = _mapper.Map<List<ResponseShortWorkItemJson>>(workItem)
+            WorkItems = _mapper.Map<List<ResponseShortWorkItemJson>>(source: workItem)
         };
     }
 }

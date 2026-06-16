@@ -7,16 +7,16 @@ public class PasswordValidator<T> : PropertyValidator<T, string>
 {
     public override bool IsValid(ValidationContext<T> context, string password)
     {
-        if (string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(value: password))
         {
-            context.MessageFormatter.AppendArgument("ErrorMessage", ResourceMessagesException.PASSWORD_EMPTY);
+            context.MessageFormatter.AppendArgument(name: "ErrorMessage", value: ResourceMessagesException.PASSWORD_EMPTY);
 
             return false;
         }
 
         if (password.Length < 6)
         {
-            context.MessageFormatter.AppendArgument("ErrorMessage", ResourceMessagesException.INVALID_PASSWORD);
+            context.MessageFormatter.AppendArgument(name: "ErrorMessage", value: ResourceMessagesException.INVALID_PASSWORD);
 
             return false;
         }

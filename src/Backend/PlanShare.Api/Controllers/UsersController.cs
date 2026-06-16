@@ -8,47 +8,47 @@ using PlanShare.Communication.Responses;
 
 namespace PlanShare.Api.Controllers;
 
-[Route("[controller]")]
+[Route(template: "[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
 {
     [HttpPost]
-    [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(type: typeof(ResponseRegisteredUserJson), statusCode: StatusCodes.Status201Created)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromServices] IRegisterUserUseCase useCase, [FromBody] RequestRegisterUserJson request)
     {
-        var response = await useCase.Execute(request);
+        ResponseRegisteredUserJson response = await useCase.Execute(request: request);
 
-        return Created(string.Empty, response);
+        return Created(uri: string.Empty, value: response);
     }
 
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfile([FromServices] IUpdateUserUseCase useCase, [FromBody] RequestUpdateUserJson request)
     {
-        await useCase.Execute(request);
+        await useCase.Execute(request: request);
 
         return NoContent();
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(type: typeof(ResponseRegisteredUserJson), statusCode: StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProfile([FromServices] IGetUserProfileUseCase useCase)
     {
-        var response = await useCase.Execute();
+        ResponseUserProfileJson response = await useCase.Execute();
 
-        return Ok(response);
+        return Ok(value: response);
     }
 
-    [HttpPut("change-password")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    [HttpPut(template: "change-password")]
+    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ChangePassword(
         [FromServices] IChangePasswordUseCase useCase,
         [FromBody] RequestChangePasswordJson request)
     {
-        await useCase.Execute(request);
+        await useCase.Execute(request: request);
 
         return NoContent();
     }

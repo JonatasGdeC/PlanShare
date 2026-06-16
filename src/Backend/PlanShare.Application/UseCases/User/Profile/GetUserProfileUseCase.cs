@@ -16,8 +16,8 @@ public class GetUserProfileUseCase : IGetUserProfileUseCase
 
     public async Task<ResponseUserProfileJson> Execute()
     {
-        var user = await _loggedUser.Get();
+        Domain.Entities.User user = await _loggedUser.Get();
 
-        return _mapper.Map<ResponseUserProfileJson>(user);
+        return _mapper.Map<ResponseUserProfileJson>(source: user);
     }
 }

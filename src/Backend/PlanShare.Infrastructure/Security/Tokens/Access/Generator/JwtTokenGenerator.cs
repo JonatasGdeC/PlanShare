@@ -19,25 +19,25 @@ internal sealed class JwtTokenGenerator : JwtTokenHandler, IAccessTokenGenerator
 
     public (string token, Guid accessTokenIdentifier) Generate(User user)
     {
-        var accessTokenIdentifier = Guid.NewGuid();
+        Guid accessTokenIdentifier = Guid.NewGuid();
 
-        var claims = new List<Claim>
+        List<Claim> claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Jti, accessTokenIdentifier.ToString()),
-            new (JwtRegisteredClaimNames.NameId, user.Id.ToString())
+            new (type: JwtRegisteredClaimNames.Jti, value: accessTokenIdentifier.ToString()),
+            new (type: JwtRegisteredClaimNames.NameId, value: user.Id.ToString())
         };
 
-        var tokenDescriptor = new SecurityTokenDescriptor
+        SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
         {
-            Expires = DateTime.UtcNow.AddMinutes(_expirationTimeMinutes),
-            Subject = new ClaimsIdentity(claims),
-            SigningCredentials = new SigningCredentials(SecurityKey(_signingKey), SecurityAlgorithms.HmacSha256Signature)
+            Expires = DateTime.UtcNow.AddMinutes(value: _expirationTimeMinutes),
+            Subject = new ClaimsIdentity(claims: claims),
+            SigningCredentials = new SigningCredentials(key: SecurityKey(signingKey: _signingKey), algorithm: SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-        var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+        SecurityToken? securityToken = tokenHandler.CreateToken(tokenDescriptor: tokenDescriptor);
 
-        return (tokenHandler.WriteToken(securityToken), accessTokenIdentifier);
+        return (tokenHandler.WriteToken(token: securityToken), accessTokenIdentifier);
     }
 }

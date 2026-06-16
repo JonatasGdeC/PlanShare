@@ -26,14 +26,14 @@ public class DeleteWorkItemUseCase : IDeleteWorkItemUseCase
 
     public async Task Execute(Guid workItemId)
     {
-        var loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await _loggedUser.Get();
 
-        var workItem = await _repositoryRead.GetById(loggedUser, workItemId);
+        Domain.Entities.WorkItem? workItem = await _repositoryRead.GetById(user: loggedUser, id: workItemId);
 
         if(workItem is null)
-            throw new NotFoundException(ResourceMessagesException.WORK_ITEM_NOT_FOUND);
+            throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
 
-        await _repositoryWrite.Delete(workItemId);
+        await _repositoryWrite.Delete(id: workItemId);
 
         await _unitOfWork.Commit();
     }

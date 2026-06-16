@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using PlanShare.Communication.Requests;
 using PlanShare.Domain.Extensions;
 using PlanShare.Domain.Repositories;
@@ -29,26 +30,26 @@ public class UpdateWorkItemUseCase : IUpdateWorkItemUseCase
 
     public async Task Execute(Guid workItemId, RequestUpdateWorkItemJson request)
     {
-        Validate(request);
+        Validate(request: request);
 
-        var loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await _loggedUser.Get();
 
-        var workItem = await _repository.GetById(loggedUser, workItemId);
+        Domain.Entities.WorkItem? workItem = await _repository.GetById(user: loggedUser, id: workItemId);
         if (workItem is null)
-            throw new NotFoundException(ResourceMessagesException.WORK_ITEM_NOT_FOUND);
+            throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
 
-        _mapper.Map(request, workItem);
+        _mapper.Map(source: request, destination: workItem);
 
-        _repository.Update(workItem);
+        _repository.Update(workItem: workItem);
 
         await _unitOfWork.Commit();
     }
 
     private static void Validate(RequestUpdateWorkItemJson request)
     {
-        var result = new UpdateWorkItemValidator().Validate(request);
+        ValidationResult? result = new UpdateWorkItemValidator().Validate(instance: request);
 
         if (result.IsValid.IsFalse())
-            throw new ErrorOnValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
+            throw new ErrorOnValidationException(listErrors: result.Errors.Select(selector: e => e.ErrorMessage).ToList());
     }
 }

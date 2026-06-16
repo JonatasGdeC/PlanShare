@@ -22,15 +22,15 @@ public class GetDashboardUseCase : IGetDashboardUseCase
 
     public async Task<ResponseDashboardJson> Execute()
     {
-        var loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await _loggedUser.Get();
 
-        var workItems = await _workItemRepository.GetAll(loggedUser);
-        var associations = await _personAssociationRepository.GetPersonAssociationsForUser(loggedUser);
+        List<Domain.Entities.WorkItem> workItems = await _workItemRepository.GetAll(user: loggedUser);
+        List<Domain.Entities.User> associations = await _personAssociationRepository.GetPersonAssociationsForUser(user: loggedUser);
 
         return new ResponseDashboardJson
         {
-            WorkItems = _mapper.Map<List<ResponseShortWorkItemJson>>(workItems),
-            Friends = _mapper.Map<List<ResponseAssigneeJson>>(associations)
+            WorkItems = _mapper.Map<List<ResponseShortWorkItemJson>>(source: workItems),
+            Friends = _mapper.Map<List<ResponseAssigneeJson>>(source: associations)
         };
     }
 }

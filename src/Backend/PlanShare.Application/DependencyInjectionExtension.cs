@@ -18,9 +18,9 @@ public static class DependencyInjectionExtension
 {
     public static void AddApplication(this IServiceCollection services)
     {
-        AddAutoMapper(services);
-        AddUseCases(services);
-        AddTokenService(services);
+        AddAutoMapper(services: services);
+        AddUseCases(services: services);
+        AddTokenService(services: services);
     }
 
     private static void AddAutoMapper(IServiceCollection services)

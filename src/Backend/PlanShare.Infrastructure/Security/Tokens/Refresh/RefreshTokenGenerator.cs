@@ -4,5 +4,5 @@ namespace PlanShare.Infrastructure.Security.Tokens.Refresh;
 
 internal sealed class RefreshTokenGenerator : IRefreshTokenGenerator
 {
-    public string Generate() => Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+    public string Generate() => Convert.ToBase64String(inArray: Guid.NewGuid().ToByteArray());
 }

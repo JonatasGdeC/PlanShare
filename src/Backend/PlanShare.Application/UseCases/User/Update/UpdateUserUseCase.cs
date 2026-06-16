@@ -29,38 +29,38 @@ public class UpdateUserUseCase : IUpdateUserUseCase
 
     public async Task Execute(RequestUpdateUserJson request)
     {
-        var loggedUser = await _loggedUser.Get();
+        Domain.Entities.User loggedUser = await _loggedUser.Get();
 
-        await Validate(request, loggedUser.Email);
+        await Validate(request: request, currentEmail: loggedUser.Email);
 
-        var user = await _repository.GetById(loggedUser.Id);
+        Domain.Entities.User user = await _repository.GetById(id: loggedUser.Id);
 
         user.Name = request.Name;
         user.Email = request.Email;
 
-        _repository.Update(user);
+        _repository.Update(user: user);
 
         await _unitOfWork.Commit();
     }
 
     private async Task Validate(RequestUpdateUserJson request, string currentEmail)
     {
-        var validator = new UpdateUserValidator();
+        UpdateUserValidator validator = new UpdateUserValidator();
 
-        var result = validator.Validate(request);
+        ValidationResult? result = validator.Validate(instance: request);
 
-        if (currentEmail.Equals(request.Email).IsFalse())
+        if (currentEmail.Equals(value: request.Email).IsFalse())
         {
-            var userExist = await _userReadOnlyRepository.ExistActiveUserWithEmail(request.Email);
+            bool userExist = await _userReadOnlyRepository.ExistActiveUserWithEmail(email: request.Email);
             if (userExist)
-                result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
+                result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
         }
 
         if (result.IsValid.IsFalse())
         {
-            var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
+            List<string> errorMessages = result.Errors.Select(selector: error => error.ErrorMessage).ToList();
 
-            throw new ErrorOnValidationException(errorMessages);
+            throw new ErrorOnValidationException(listErrors: errorMessages);
         }
     }
 }

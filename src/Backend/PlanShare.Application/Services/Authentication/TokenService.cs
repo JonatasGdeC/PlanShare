@@ -19,7 +19,7 @@ public class TokenService : ITokenService
 
     public async Task<TokensDto> GenerateTokens(User user)
     {
-        (var accessToken, var accessTokenIdentifier) = _accessTokenGenerator.Generate(user);
+        (string accessToken, Guid accessTokenIdentifier) = _accessTokenGenerator.Generate(user: user);
 
         return new TokensDto
         {

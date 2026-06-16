@@ -1,6 +1,7 @@
 ﻿using PlanShare.Application.Services.Authentication;
 using PlanShare.Communication.Requests;
 using PlanShare.Communication.Responses;
+using PlanShare.Domain.Dtos;
 using PlanShare.Domain.Repositories.User;
 using PlanShare.Domain.Security.Cryptography;
 using PlanShare.Exceptions.ExceptionsBase;
@@ -24,17 +25,17 @@ public class DoLoginUseCase : IDoLoginUseCase
 
     public async Task<ResponseRegisteredUserJson> Execute(RequestLoginJson request)
     {
-        var user = await _repository.GetUserByEmail(request.Email);
+        Domain.Entities.User? user = await _repository.GetUserByEmail(email: request.Email);
 
         if (user is null)
             throw new InvalidLoginException();
 
-        var passwordMatch = _passwordEncripter.IsValid(request.Password, user.Password);
+        bool passwordMatch = _passwordEncripter.IsValid(password: request.Password, passwordHash: user.Password);
 
         if (passwordMatch == false)
             throw new InvalidLoginException();
 
-        var tokens = await _tokenService.GenerateTokens(user);
+        TokensDto tokens = await _tokenService.GenerateTokens(user: user);
 
         return new ResponseRegisteredUserJson
         {

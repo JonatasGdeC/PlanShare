@@ -2,7 +2,7 @@
 
 namespace PlanShare.Exceptions.ExceptionsBase;
 
-public class ErrorOnValidationException(IList<string> listErrors) : PlanShareException("")
+public class ErrorOnValidationException(IList<string> listErrors) : PlanShareException(message: "")
 {
     private readonly IList<string> _errorMenssages = listErrors;
 

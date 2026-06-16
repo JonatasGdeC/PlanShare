@@ -4,7 +4,7 @@ namespace PlanShare.Exceptions.ExceptionsBase;
 
 public class InvalidLoginException : PlanShareException
 {
-    public InvalidLoginException() : base(ResourceMessagesException.EMAIL_OR_PASSWORD_INVALID) { }
+    public InvalidLoginException() : base(message: ResourceMessagesException.EMAIL_OR_PASSWORD_INVALID) { }
 
     public override IList<string> GetErrorMessages() => [Message];
 

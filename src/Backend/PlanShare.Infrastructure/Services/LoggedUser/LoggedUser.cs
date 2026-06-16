@@ -19,15 +19,15 @@ internal sealed class LoggedUser : ILoggedUser
 
     public async Task<User> Get()
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-        var jwtSecurityToken = tokenHandler.ReadJwtToken(_tokenValue.Value());
+        JwtSecurityToken? jwtSecurityToken = tokenHandler.ReadJwtToken(token: _tokenValue.Value());
 
-        var identifier = jwtSecurityToken.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.NameId).Value;
+        string identifier = jwtSecurityToken.Claims.First(predicate: claim => claim.Type == JwtRegisteredClaimNames.NameId).Value;
 
         return await _dbContext
             .Users
             .AsNoTracking()
-            .FirstAsync(user => user.Active && user.Id == Guid.Parse(identifier));
+            .FirstAsync(predicate: user => user.Active && user.Id == Guid.Parse(identifier));
     }
 }

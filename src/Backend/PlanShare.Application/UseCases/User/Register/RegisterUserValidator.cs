@@ -9,12 +9,12 @@ public class RegisterUserValidator : AbstractValidator<RequestRegisterUserJson>
 {
     public RegisterUserValidator()
     {
-        RuleFor(request => request.Name).NotEmpty().WithMessage(ResourceMessagesException.NAME_EMPTY);
-        RuleFor(request => request.Email).NotEmpty().WithMessage(ResourceMessagesException.EMAIL_EMPTY);
-        RuleFor(request => request.Password).SetValidator(new PasswordValidator<RequestRegisterUserJson>());
-        When(request => request.Email.NotEmpty(), () =>
+        RuleFor(expression: request => request.Name).NotEmpty().WithMessage(errorMessage: ResourceMessagesException.NAME_EMPTY);
+        RuleFor(expression: request => request.Email).NotEmpty().WithMessage(errorMessage: ResourceMessagesException.EMAIL_EMPTY);
+        RuleFor(expression: request => request.Password).SetValidator(validator: new PasswordValidator<RequestRegisterUserJson>());
+        When(predicate: request => request.Email.NotEmpty(), action: () =>
         {
-            RuleFor(request => request.Email).EmailAddress().WithMessage(ResourceMessagesException.EMAIL_INVALID);
+            RuleFor(expression: request => request.Email).EmailAddress().WithMessage(errorMessage: ResourceMessagesException.EMAIL_INVALID);
         });
     }
 }

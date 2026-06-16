@@ -1,7 +1,7 @@
 ﻿using System.Net;
 
 namespace PlanShare.Exceptions.ExceptionsBase;
-public class UnauthorizedException(string mensagem) : PlanShareException(mensagem)
+public class UnauthorizedException(string mensagem) : PlanShareException(message: mensagem)
 {
     public override IList<string> GetErrorMessages() => [Message];
 

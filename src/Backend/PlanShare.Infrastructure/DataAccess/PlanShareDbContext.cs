@@ -4,7 +4,7 @@ using PlanShare.Domain.Entities;
 namespace PlanShare.Infrastructure.DataAccess;
 public sealed class PlanShareDbContext : DbContext
 {
-    public PlanShareDbContext(DbContextOptions options) : base(options) { }
+    public PlanShareDbContext(DbContextOptions options) : base(options: options) { }
 
     public DbSet<User> Users { get; set; }
     public DbSet<WorkItem> WorkItems { get; set; }
@@ -12,8 +12,8 @@ public sealed class PlanShareDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(modelBuilder: modelBuilder);
 
-        modelBuilder.Entity<Assignee>().ToTable("Assignees");
+        modelBuilder.Entity<Assignee>().ToTable(name: "Assignees");
     }
 }

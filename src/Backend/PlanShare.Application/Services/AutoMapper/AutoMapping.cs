@@ -14,17 +14,17 @@ public class AutoMapping : Profile
     private void RequestToDomain()
     {
         CreateMap<RequestRegisterUserJson, Domain.Entities.User>()
-            .ForMember(dest => dest.Password, opt => opt.Ignore());
+            .ForMember(destinationMember: dest => dest.Password, memberOptions: opt => opt.Ignore());
 
         CreateMap<RequestRegisterWorkItemJson, Domain.Entities.WorkItem>()
-            .ForMember(dest => dest.DueDate, opt => opt.MapFrom(source => source.DueDate.Date))
-            .ForMember(dest => dest.Assignees, opt => opt.MapFrom(source => source.Assignees.Distinct()));
+            .ForMember(destinationMember: dest => dest.DueDate, memberOptions: opt => opt.MapFrom(mapExpression: source => source.DueDate.Date))
+            .ForMember(destinationMember: dest => dest.Assignees, memberOptions: opt => opt.MapFrom(mapExpression: source => source.Assignees.Distinct()));
 
         CreateMap<Guid, Domain.Entities.Assignee>()
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(source => source));
+            .ForMember(destinationMember: dest => dest.UserId, memberOptions: opt => opt.MapFrom(mapExpression: source => source));
 
         CreateMap<RequestUpdateWorkItemJson, Domain.Entities.WorkItem>()
-            .ForMember(dest => dest.DueDate, opt => opt.MapFrom(source => source.DueDate.Date));
+            .ForMember(destinationMember: dest => dest.DueDate, memberOptions: opt => opt.MapFrom(mapExpression: source => source.DueDate.Date));
     }
 
     private void DomainToResponse()

@@ -6,7 +6,7 @@ using PlanShare.Application;
 using PlanShare.Domain.Security.Tokens;
 using PlanShare.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args: args);
 
 builder.Services.AddControllers();
 
@@ -14,9 +14,9 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(config =>
+builder.Services.AddSwaggerGen(setupAction: config =>
 {
-    config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    config.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Description = @"JWT Authorization header using the Bearer scheme.
@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(config =>
         Type = SecuritySchemeType.ApiKey
     });
 
-    config.AddSecurityRequirement(new OpenApiSecurityRequirement
+    config.AddSecurityRequirement(securityRequirement: new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -47,17 +47,17 @@ builder.Services.AddSwaggerGen(config =>
 });
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(configuration: builder.Configuration);
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddRouting(configureOptions: options => options.LowercaseUrls = true);
 
-builder.Services.AddMvc(options => options.Filters.Add<ExceptionFilter>());
+builder.Services.AddMvc(setupAction: options => options.Filters.Add<ExceptionFilter>());
 
 builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 
 builder.Services.AddHttpContextAccessor();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {

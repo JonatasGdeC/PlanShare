@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using PlanShare.Communication.Requests;
 using PlanShare.Communication.Responses;
 using PlanShare.Domain.Extensions;
@@ -22,11 +23,11 @@ public class RegisterWorkItemUseCase : IRegisterWorkItemUseCase
 
     public async Task<ResponseRegisteredWorkItemJson> Execute(RequestRegisterWorkItemJson request)
     {
-        await Validate(request);
+        await Validate(request: request);
 
-        var entity = _mapper.Map<Domain.Entities.WorkItem>(request);
+        Domain.Entities.WorkItem? entity = _mapper.Map<Domain.Entities.WorkItem>(source: request);
 
-        await _repository.Add(entity);
+        await _repository.Add(workItem: entity);
 
         await _unitOfWork.Commit();
 
@@ -39,9 +40,9 @@ public class RegisterWorkItemUseCase : IRegisterWorkItemUseCase
 
     private async Task Validate(RequestRegisterWorkItemJson request)
     {
-        var result = new RegisterWorkItemValidator().Validate(request);
+        ValidationResult? result = new RegisterWorkItemValidator().Validate(instance: request);
 
         if (result.IsValid.IsFalse())
-            throw new ErrorOnValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
+            throw new ErrorOnValidationException(listErrors: result.Errors.Select(selector: e => e.ErrorMessage).ToList());
     }
 }

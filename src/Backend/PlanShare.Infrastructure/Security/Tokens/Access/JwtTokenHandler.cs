@@ -6,7 +6,7 @@ internal abstract class JwtTokenHandler
 {
     protected static SymmetricSecurityKey SecurityKey(string signingKey)
     {
-        var symmetricKey = Encoding.UTF8.GetBytes(signingKey);
-        return new SymmetricSecurityKey(symmetricKey);
+        byte[] symmetricKey = Encoding.UTF8.GetBytes(s: signingKey);
+        return new SymmetricSecurityKey(key: symmetricKey);
     }
 }

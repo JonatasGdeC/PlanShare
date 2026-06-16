@@ -3,7 +3,7 @@
 namespace PlanShare.Infrastructure.Security.Cryptography;
 internal sealed class BCryptNet : IPasswordEncripter
 {
-    public string Encrypt(string password) => BCrypt.Net.BCrypt.HashPassword(password);
+    public string Encrypt(string password) => BCrypt.Net.BCrypt.HashPassword(inputKey: password);
 
-    public bool IsValid(string password, string passwordHash) => BCrypt.Net.BCrypt.Verify(password, passwordHash);
+    public bool IsValid(string password, string passwordHash) => BCrypt.Net.BCrypt.Verify(text: password, hash: passwordHash);
 }

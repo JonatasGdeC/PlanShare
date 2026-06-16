@@ -9,66 +9,66 @@ using PlanShare.Communication.Responses;
 
 namespace PlanShare.Api.Controllers;
 
-[Route("[controller]")]
+[Route(template: "[controller]")]
 [ApiController]
 public class WorkItemController : ControllerBase
 {
     [HttpPost]
-    [ProducesResponseType(typeof(ResponseRegisteredWorkItemJson), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(type: typeof(ResponseRegisteredWorkItemJson), statusCode: StatusCodes.Status201Created)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Register(
         [FromServices] IRegisterWorkItemUseCase useCase,
         [FromForm] RequestRegisterWorkItemJson request,
         List<IFormFile> files)
     {
-        var response = await useCase.Execute(request);
+        ResponseRegisteredWorkItemJson response = await useCase.Execute(request: request);
 
-        return Created(string.Empty, response);
+        return Created(uri: string.Empty, value: response);
     }
 
     [HttpDelete]
-    [Route("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    [Route(template: "{id}")]
+    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete([FromServices] IDeleteWorkItemUseCase useCase, [FromRoute] Guid id)
     {
-        await useCase.Execute(id);
+        await useCase.Execute(workItemId: id);
 
         return NoContent();
     }
 
     [HttpGet]
-    [Route("{id}")]
-    [ProducesResponseType(typeof(ResponseWorkItemJson), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    [Route(template: "{id}")]
+    [ProducesResponseType(type: typeof(ResponseWorkItemJson), statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromServices] IGetByIdWorkItemUseCase useCase, [FromRoute] Guid id)
     {
-        var result = await useCase.Execute(id);
+        ResponseWorkItemJson result = await useCase.Execute(workItemId: id);
 
-        return Ok(result);
+        return Ok(value: result);
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(ResponseWorkItemJson), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(type: typeof(ResponseWorkItemJson), statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromServices] IGetAllWorkItemUseCase useCase)
     {
-        var result = await useCase.Execute();
+        ResponseWorkItemsJson result = await useCase.Execute();
         if(result.WorkItems.Count == 0)
             return NoContent();
 
-        return Ok(result);
+        return Ok(value: result);
     }
 
     [HttpPut]
-    [Route("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    [Route(template: "{id}")]
+    [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(type: typeof(ResponseErrorJson), statusCode: StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update([FromServices] IUpdateWorkItemUseCase useCase, [FromRoute] Guid id, [FromBody] RequestUpdateWorkItemJson request)
     {
-        await useCase.Execute(id, request);
+        await useCase.Execute(workItemId: id, request: request);
 
         return NoContent();
     }
