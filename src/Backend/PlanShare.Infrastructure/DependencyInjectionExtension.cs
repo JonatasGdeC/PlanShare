@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using FluentMigrator.Runner;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PlanShare.Domain.Repositories;
@@ -26,6 +28,7 @@ public static class DependencyInjectionExtension
         AddTokenHandlers(services: services, configuration: configuration);
         AddPasswordEncripter(services: services);
         AddDbContext(services: services, configuration: configuration);
+        AddFluentMigrator(services: services, configuration: configuration);
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
@@ -63,5 +66,18 @@ public static class DependencyInjectionExtension
 
         services.AddScoped<IAccessTokenValidator>(implementationFactory: option => new JwtTokenValidator(signingKey: signingKey));
         services.AddScoped<IAccessTokenGenerator>(implementationFactory: option => new JwtTokenGenerator(expirationTimeMinutes: expirationTimeMinutes, signingKey: signingKey));
+    }
+    
+    private static void AddFluentMigrator(IServiceCollection services, IConfiguration configuration)
+    {
+        string connectionString = configuration.ConnectionString();
+        services.AddFluentMigratorCore()
+            .ConfigureRunner(configure: config =>
+            {
+                Assembly infrastructure = Assembly.Load(assemblyString: "PlanShare.Infrastructure");
+                IMigrationRunnerBuilder? migrationRunnerBuilder =  config.AddPostgres();
+                
+                migrationRunnerBuilder.WithGlobalConnectionString(connectionStringOrName: connectionString).ScanIn(infrastructure).For.All();
+            });
     }
 }

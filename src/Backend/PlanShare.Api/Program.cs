@@ -5,7 +5,8 @@ using PlanShare.Api.Token;
 using PlanShare.Application;
 using PlanShare.Domain.Security.Tokens;
 using PlanShare.Infrastructure;
-using PlanShare.Infrastructure.DataAccess.Migrations;
+using PlanShare.Infrastructure.Extensions;
+using PlanShare.Infrastructure.Migrations;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args: args);
 
@@ -68,12 +69,16 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await MigrateDatabase();
+if (builder.Configuration.IsUnitTestEnviroment() == false)
+{
+    await MigrateDatabase();
+}
 
 app.Run();
 
-async Task MigrateDatabase()  
-{  
-    await using AsyncServiceScope scope = app.Services.CreateAsyncScope();  
-    await DataBaseMigration.MigrateDatabase(serviceProvider: scope.ServiceProvider);  
+async Task MigrateDatabase()
+{   
+    await using AsyncServiceScope scope = app.Services.CreateAsyncScope();
+    string stringConnection = builder.Configuration.ConnectionString();
+    DataBaseMigration.Migrate(connectionString: stringConnection, serviceProvider: scope.ServiceProvider);
 }
