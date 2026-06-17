@@ -1,3 +1,7 @@
+using System.Reflection;
+using System.Text.Json;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi;
 using PlanShare.Api.Filters;
 using PlanShare.Api.Middleware;
@@ -49,8 +53,11 @@ builder.Services.AddMvc(setupAction: options => options.Filters.Add<ExceptionFil
 
 builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddHttpContextAccessor();
 
+DateTime applicationStartedAt = DateTime.UtcNow;
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -67,6 +74,34 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.MapHealthChecks(pattern: "/health/check", options: new HealthCheckOptions
+{
+    AllowCachingResponses = false,
+    ResultStatusCodes =
+    {
+        [key: HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [key: HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
+    },
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+
+        var response = new
+        {
+            version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(),
+            environment = app.Environment.EnvironmentName,
+            databaseConnected = report.Status == HealthStatus.Healthy,
+            applicationStartedAt = applicationStartedAt
+        };
+
+        await context.Response.WriteAsync(text: JsonSerializer.Serialize(value: response,
+            options: new JsonSerializerOptions
+            {
+                WriteIndented = true
+            }));
+    }
+});
+
 app.MapControllers();
 
 if (builder.Configuration.IsUnitTestEnviroment() == false)
@@ -77,7 +112,7 @@ if (builder.Configuration.IsUnitTestEnviroment() == false)
 app.Run();
 
 async Task MigrateDatabase()
-{   
+{
     await using AsyncServiceScope scope = app.Services.CreateAsyncScope();
     string stringConnection = builder.Configuration.ConnectionString();
     DataBaseMigration.Migrate(connectionString: stringConnection, serviceProvider: scope.ServiceProvider);
