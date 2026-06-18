@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace PlanShare.App;
+﻿namespace PlanShare.App;
 
 public static class MauiProgram
 {
@@ -14,11 +12,7 @@ public static class MauiProgram
                 fonts.AddFont(filename: "OpenSans-Regular.ttf", alias: "OpenSansRegular");
                 fonts.AddFont(filename: "OpenSans-Semibold.ttf", alias: "OpenSansSemibold");
             });
-
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
-
+        
         return builder.Build();
     }
 }
