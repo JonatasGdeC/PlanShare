@@ -11,9 +11,11 @@
     <Style x:Key="HighLight" TargetType="Label">
         <Setter Property="FontFamily" Value="{Static fontFamily:FontFamily.SECONDARY_FONT_BLACK}" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource BlueDark}, Dark={StaticResource BlueLight}}" />
+        <Setter Property="TextDecorations" Value="Underline" />
     </Style>
     
     <Style x:Key="Title" TargetType="Label">
+        <Setter Property="FontSize" Value="18" />
         <Setter Property="FontFamily" Value="{Static fontFamily:FontFamily.MAIN_FONT_BLACK}" />
     </Style>
 </ResourceDictionary>

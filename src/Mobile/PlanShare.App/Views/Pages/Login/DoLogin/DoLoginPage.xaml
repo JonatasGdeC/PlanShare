@@ -5,5 +5,11 @@
              x:Class="PlanShare.App.Views.Pages.Login.DoLogin.DoLoginPage">
     <VerticalStackLayout>
         <Label Text="Login" Style="{StaticResource Title}"/>
+        
+        <Label Text="Esqueceu sua Senha?" Style="{StaticResource HighLight}"
+               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+               Margin="0,40,0,70" HorizontalOptions="End"/>
+        
+        <Button Text="Login"/>
     </VerticalStackLayout>
 </ContentPage>

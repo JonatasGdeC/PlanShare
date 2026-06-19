@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanShare.App.Views.Pages.OnBoarding.OnBoardingPage"
              xmlns:viewModel="clr-namespace:PlanShare.App.ViewModels.Pages.OnBoarding"
              x:DataType="viewModel:OnBoardingViewModel"
              Shell.NavBarIsVisible="False">
-    
+
     <VerticalStackLayout>
-        
-        <Image Source="hero_image.png"/>
-        
-        <Label Text="Tarefas pequenas, grandes resultados." 
+
+        <Image Source="hero_image.png" />
+
+        <Label Text="Tarefas pequenas, grandes resultados."
                Style="{StaticResource Title}"
-               HorizontalOptions="Center"/>
+               HorizontalOptions="Center" />
 
         <Button Text="Continuar com o Google"
-                Style="{StaticResource ButtonGoogleLogin}" 
+                Style="{StaticResource ButtonGoogleLogin}"
                 Command="{Binding LoginWithGoogleCommand}"
-                ImageSource="google_icon.png" 
-                Margin="0,40,0,20"/>
+                ImageSource="google_icon.png"
+                Margin="0,40,0,20" />
 
-        <Button Text="Login com Email e Senha" 
+        <Button Text="Login com Email e Senha"
                 Command="{Binding LoginWithEmailAndPasswordsCommand}"
-                Margin="0,0,0,40"/>
+                Margin="0,0,0,40" />
 
-        <HorizontalStackLayout HorizontalOptions="Center" HeightRequest="40">
-            <HorizontalStackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding RegisterUserCommand}" />
-            </HorizontalStackLayout.GestureRecognizers>
-
-            <Label Text="Não tem uma conta? "/>
-            <Label Text="Crie a sua conta!" Style="{StaticResource HighLight}"/>
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Label Text="Não tem uma conta? " />
+            <Label Text="Crie a sua conta!" Style="{StaticResource HighLight}" HeightRequest="40">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RegisterUserCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
         </HorizontalStackLayout>
-        
+
     </VerticalStackLayout>
-    
+
 </ContentPage>

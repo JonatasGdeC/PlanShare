@@ -2,10 +2,24 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PlanShare.App.Views.Pages.User.Register.RegisterUserPage">
+             x:Class="PlanShare.App.Views.Pages.User.Register.RegisterUserPage"
+             xmlns:viewModel="clr-namespace:PlanShare.App.ViewModels.Pages.User.Register"
+             x:DataType="viewModel:RegisterUserViewModel">
     
     <VerticalStackLayout>
         <Label Text="Criar minha conta" Style="{StaticResource Title}"/>
+        <Label Text="Comande sua rotina com facilidade—porque você merece mais tempo para o que ama!" Margin="0,20,0,40"/>
+
+        <Button Text="Criar minha conta" Style="{StaticResource ButtonCreateUser}" Margin="0,70"/>
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Label Text="Já possui conta? "/>
+            <Label Text="Faça login" Style="{StaticResource HighLight}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LoginWithEmailAndPasswordsCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
     
 </ContentPage>
