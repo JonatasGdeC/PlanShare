@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlanShare.App.Views.Pages.OnBoarding.OnBoarding">
+    <VerticalStackLayout>
+        <Image Source="hero_image.png"/>
+        
+        <Label 
+            Text="Tarefas pequenas, grandes resultados."
+            HorizontalOptions="Center"
+            FontSize="16" FontFamily="RalewayBlack"/>
+
+        <Button Text="Continuar com o Google" Style="{StaticResource ButtonGoogleLogin}" 
+                ImageSource="google_icon.png" Margin="0,40,0,20"/>
+        
+        <Button Text="Login com Email e Senha" Margin="0,0,0,40"/>
+        
+        <Label HorizontalOptions="Center" FontSize="16">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Não tem uma conta? " FontFamily="WorkSansRegular"/>
+                    <Span Text="Crie a sua conta!" TextColor="#0065F2" FontFamily="WorkSansBlack"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+    </VerticalStackLayout>
+</ContentPage>
