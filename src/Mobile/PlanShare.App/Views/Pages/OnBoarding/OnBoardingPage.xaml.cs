@@ -1,9 +1,12 @@
+using PlanShare.App.ViewModels.Pages.OnBoarding;
+
 namespace PlanShare.App.Views.Pages.OnBoarding;
 
-public partial class OnBoarding : ContentPage
+public partial class OnBoardingPage : ContentPage
 {
-    public OnBoarding()
+    public OnBoardingPage()
     {
         InitializeComponent();
+        BindingContext = new OnBoardingViewModel();
     }
 }

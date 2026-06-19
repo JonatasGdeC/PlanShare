@@ -8,7 +8,7 @@
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate onBoarding:OnBoarding}"
+        ContentTemplate="{DataTemplate onBoarding:OnBoardingPage}"
         Route="MainPage" />
 
 </Shell>
