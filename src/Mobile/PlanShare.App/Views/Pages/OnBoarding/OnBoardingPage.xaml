@@ -6,23 +6,21 @@
     <VerticalStackLayout>
         <Image Source="hero_image.png"/>
         
-        <Label 
-            Text="Tarefas pequenas, grandes resultados."
-            HorizontalOptions="Center"
-            FontSize="16" FontFamily="RalewayBlack"/>
+        <Label Text="Tarefas pequenas, grandes resultados." 
+               Style="{StaticResource Title}"
+               HorizontalOptions="Center"/>
 
-        <Button Text="Continuar com o Google" Style="{StaticResource ButtonGoogleLogin}" 
-                ImageSource="google_icon.png" Margin="0,40,0,20"/>
+        <Button Text="Continuar com o Google" 
+                Style="{StaticResource ButtonGoogleLogin}" 
+                ImageSource="google_icon.png" 
+                Margin="0,40,0,20"/>
         
-        <Button Text="Login com Email e Senha" Margin="0,0,0,40"/>
-        
-        <Label HorizontalOptions="Center" FontSize="16">
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="Não tem uma conta? " FontFamily="WorkSansRegular"/>
-                    <Span Text="Crie a sua conta!" TextColor="#0065F2" FontFamily="WorkSansBlack"/>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+        <Button Text="Login com Email e Senha" 
+                Margin="0,0,0,40"/>
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Label Text="Não tem uma conta? "/>
+            <Label Text="Crie a sua conta!" Style="{StaticResource HighLight}"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
