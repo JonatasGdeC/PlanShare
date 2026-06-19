@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 
 namespace PlanShare.App.ViewModels.Pages.OnBoarding;
@@ -6,13 +5,13 @@ namespace PlanShare.App.ViewModels.Pages.OnBoarding;
 public partial class OnBoardingViewModel
 {
     [RelayCommand]
-    public void LoginWithEmailAndPasswords()
+    private async Task LoginWithEmailAndPasswords()
     {
-
+        await Shell.Current.GoToAsync(state: "DoLoginPage");
     }
 
     [RelayCommand]
-    public void LoginWithGoogle()
+    private void LoginWithGoogle()
     {
 
     }

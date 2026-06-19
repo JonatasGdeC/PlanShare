@@ -4,7 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanShare.App.Views.Pages.OnBoarding.OnBoardingPage"
              xmlns:viewModel="clr-namespace:PlanShare.App.ViewModels.Pages.OnBoarding"
-             x:DataType="viewModel:OnBoardingViewModel">
+             x:DataType="viewModel:OnBoardingViewModel"
+             Shell.NavBarIsVisible="False">
     
     <VerticalStackLayout>
         
