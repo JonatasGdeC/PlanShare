@@ -3,11 +3,12 @@
     x:Class="PlanShare.App.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:onBoarding="clr-namespace:PlanShare.App.Views.Pages.OnBoarding">
+    xmlns:onBoarding="clr-namespace:PlanShare.App.Views.Pages.OnBoarding"
+    xmlns:navigation="clr-namespace:PlanShare.App.Navigation">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate onBoarding:OnBoardingPage}"
-        Route="MainPage" />
+        Route="{Static navigation:RoutePages.ONBOARDING_PAGE}" />
 
 </Shell>
