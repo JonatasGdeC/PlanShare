@@ -6,6 +6,12 @@
     <VerticalStackLayout>
         <Label Text="Login" Style="{StaticResource Title}"/>
         
+        <Label Text="Email" Style="{StaticResource }"/>
+        <Entry Placeholder="Digite sue email" Keyboard="Email"/>
+        
+        <Label Text="Senha"/>
+        <Entry Placeholder="Digite sua senha" IsPassword="True"/>
+        
         <Label Text="Esqueceu sua Senha?" Style="{StaticResource HighLight}"
                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                Margin="0,40,0,70" HorizontalOptions="End"/>

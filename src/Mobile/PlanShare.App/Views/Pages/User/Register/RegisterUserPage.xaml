@@ -14,7 +14,7 @@
 
         <HorizontalStackLayout HorizontalOptions="Center">
             <Label Text="Já possui conta? "/>
-            <Label Text="Faça login" Style="{StaticResource HighLight}">
+            <Label Text="Faça login" Style="{StaticResource HighLight}" HeightRequest="40">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding LoginWithEmailAndPasswordsCommand}" />
                 </Label.GestureRecognizers>
