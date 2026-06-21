@@ -4,11 +4,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanShare.App.Views.Pages.User.Register.RegisterUserPage"
              xmlns:viewModel="clr-namespace:PlanShare.App.ViewModels.Pages.User.Register"
+             xmlns:component="clr-namespace:PlanShare.App.Views.Components.Input;assembly=PlanShare.App"
              x:DataType="viewModel:RegisterUserViewModel">
     
     <VerticalStackLayout>
-        <Label Text="Criar minha conta" Style="{StaticResource Title}"/>
-        <Label Text="Comande sua rotina com facilidade—porque você merece mais tempo para o que ama!" Margin="0,20,0,40"/>
+        <Label 
+            Text="Criar minha conta" 
+            Style="{StaticResource Title}"/>
+        
+        <Label 
+            Text="Comande sua rotina com facilidade—porque você merece mais tempo para o que ama!" 
+            Margin="0,20,0,40"/>
+        
+        <component:InputComponent 
+            Title="Nome" 
+            Placeholder="Seu nome"/>
+        
+        <component:InputComponent 
+            Title="Email" 
+            Placeholder="email@email.com" 
+            Keyboard="Email"
+            Margin="0,30,0,30"/>
+
+        <component:InputPasswordComponent/>
 
         <Button Text="Criar minha conta" Style="{StaticResource ButtonCreateUser}" Margin="0,70"/>
 
