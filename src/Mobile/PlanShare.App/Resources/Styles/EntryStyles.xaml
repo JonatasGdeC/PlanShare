@@ -6,6 +6,5 @@
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="PlaceholderColor" Value="Grey"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
-        <Setter Property="HeightRequest" Value="60"/>
     </Style>
 </ResourceDictionary>

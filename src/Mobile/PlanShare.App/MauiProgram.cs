@@ -1,4 +1,6 @@
-﻿using PlanShare.App.Constants;
+﻿using Android.Content.Res;
+using Microsoft.Maui.Handlers;
+using PlanShare.App.Constants;
 using PlanShare.App.Navigation;
 using PlanShare.App.Views.Pages.Login.DoLogin;
 using PlanShare.App.Views.Pages.User.Register;
@@ -14,7 +16,17 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .AddPages()
             .AddFonts();
-        
+
+        builder.ConfigureMauiHandlers(handlers =>
+        {
+            EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+                #if ANDROID
+                    handler.PlatformView.Background = null;
+                #endif
+            });
+        });
+
         return builder.Build();
     }
     
