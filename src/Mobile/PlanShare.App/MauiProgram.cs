@@ -1,5 +1,4 @@
-﻿using Android.Content.Res;
-using Microsoft.Maui.Handlers;
+﻿using Microsoft.Maui.Handlers;
 using PlanShare.App.Constants;
 using PlanShare.App.Navigation;
 using PlanShare.App.Views.Pages.Login.DoLogin;
@@ -44,7 +43,7 @@ public static class MauiProgram
         {
             fonts.AddFont(filename: "Raleway-Black.ttf", alias: FontFamily.MAIN_FONT_BLACK);
             fonts.AddFont(filename: "Raleway-Regular.ttf", alias: FontFamily.MAIN_FONT_REGULAR);
-            fonts.AddFont(filename: "Raleway-Thin.ttf", alias: FontFamily.MAIN_FONT_THIN);
+            fonts.AddFont(filename: "Raleway-Light.ttf", alias: FontFamily.MAIN_FONT_LIGHT);
             fonts.AddFont(filename: "WorkSans-Black.ttf", alias: FontFamily.SECONDARY_FONT_BLACK);
             fonts.AddFont(filename: "WorkSans-Regular.ttf", alias: FontFamily.SECONDARY_FONT_REGULAR);
         });

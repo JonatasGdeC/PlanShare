@@ -7,7 +7,6 @@
     xmlns:navigation="clr-namespace:PlanShare.App.Navigation">
 
     <ShellContent
-        Title="Home"
         ContentTemplate="{DataTemplate onBoarding:OnBoardingPage}"
         Route="{Static navigation:RoutePages.ONBOARDING_PAGE}" />
 
