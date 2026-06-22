@@ -5,34 +5,36 @@
              x:Class="PlanShare.App.Views.Pages.User.Register.RegisterUserPage"
              xmlns:viewModel="clr-namespace:PlanShare.App.ViewModels.Pages.User.Register"
              xmlns:component="clr-namespace:PlanShare.App.Views.Components.Input;assembly=PlanShare.App"
+             xmlns:resourceFile="clr-namespace:PlanShare.App.Resources"
              x:DataType="viewModel:RegisterUserViewModel">
-    
+
     <VerticalStackLayout>
-        <Label 
-            Text="Criar minha conta" 
+        <Label
+            Text="{x:Static resourceFile:ResourceTexts.TITLE_REGISTER_MY_ACCOUNT}"
             Style="{StaticResource Title}"/>
-        
-        <Label 
-            Text="Comande sua rotina com facilidade—porque você merece mais tempo para o que ama!" 
+
+        <Label
+            Text="{x:Static resourceFile:ResourceTexts.SUBTITLE_REGISTER_ACCOUNT}"
             Margin="0,20,0,40"/>
-        
-        <component:InputComponent 
-            Title="Nome" 
+
+        <component:InputComponent
+            Title="{x:Static resourceFile:ResourceTexts.TITLE_NAME}"
             Placeholder="Seu nome"/>
-        
-        <component:InputComponent 
-            Title="Email" 
-            Placeholder="email@email.com" 
+
+        <component:InputComponent
+            Title="{x:Static resourceFile:ResourceTexts.TITLE_EMAIL}"
+            Placeholder="email@email.com"
             Keyboard="Email"
             Margin="0,30,0,30"/>
 
-        <component:InputPasswordComponent/>
+        <component:InputPasswordComponent Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}"/>
 
-        <Button Text="Criar minha conta" Style="{StaticResource ButtonCreateUser}" Margin="0,70"/>
+        <Button Text="{x:Static resourceFile:ResourceTexts.TITLE_REGISTER_MY_ACCOUNT}" Style="{StaticResource ButtonCreateUser}" Margin="0,70"/>
 
         <HorizontalStackLayout HorizontalOptions="Center">
-            <Label Text="Já possui conta? "/>
-            <Label Text="Faça login" Style="{StaticResource HighLight}" HeightRequest="40">
+            <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_ALREADY_HAS_ACCOUNT}"/>
+            <Label Text=" " />
+            <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_DO_LOGIN}" Style="{StaticResource HighLight}" HeightRequest="40">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding LoginWithEmailAndPasswordsCommand}" />
                 </Label.GestureRecognizers>

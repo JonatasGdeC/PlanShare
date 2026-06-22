@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanShare.App.Views.Pages.OnBoarding.OnBoardingPage"
              xmlns:viewModel="clr-namespace:PlanShare.App.ViewModels.Pages.OnBoarding"
+             xmlns:resourceFile="clr-namespace:PlanShare.App.Resources"
              x:DataType="viewModel:OnBoardingViewModel"
              Shell.NavBarIsVisible="False">
 
@@ -11,23 +12,24 @@
 
         <Image Source="hero_image.png" />
 
-        <Label Text="Tarefas pequenas, grandes resultados."
+        <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_SMALL_TASKS_BIG_RESULTS}"
                Style="{StaticResource Title}"
                HorizontalOptions="Center" />
 
-        <Button Text="Continuar com o Google"
+        <Button Text="{x:Static resourceFile:ResourceTexts.PHRASE_CONTINUE_WITH_GOOGLE}"
                 Style="{StaticResource ButtonGoogleLogin}"
                 Command="{Binding LoginWithGoogleCommand}"
                 ImageSource="google_icon.png"
                 Margin="0,40,0,20" />
 
-        <Button Text="Login com Email e Senha"
+        <Button Text="{x:Static resourceFile:ResourceTexts.LOGIN_WITH_EMAIL_PASSWORD}"
                 Command="{Binding LoginWithEmailAndPasswordsCommand}"
                 Margin="0,0,0,40" />
 
         <HorizontalStackLayout HorizontalOptions="Center">
-            <Label Text="Não tem uma conta? " />
-            <Label Text="Crie a sua conta!" Style="{StaticResource HighLight}" HeightRequest="40">
+            <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_DONT_HAVE_ACCOUNT}" />
+            <Label Text=" " />
+            <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_REGISTER_YOUR_ACCOUNT}" Style="{StaticResource HighLight}" HeightRequest="40">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding RegisterUserCommand}" />
                 </Label.GestureRecognizers>

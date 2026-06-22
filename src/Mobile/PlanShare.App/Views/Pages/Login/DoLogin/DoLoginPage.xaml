@@ -3,22 +3,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:component="clr-namespace:PlanShare.App.Views.Components.Input;assembly=PlanShare.App"
+             xmlns:resourceFile="clr-namespace:PlanShare.App.Resources"
              x:Class="PlanShare.App.Views.Pages.Login.DoLogin.DoLoginPage">
     <VerticalStackLayout>
-        <Label Text="Login" Style="{StaticResource Title}"/>
+        <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_LOGIN}" Style="{StaticResource Title}"/>
 
-        <component:InputComponent 
-            Title="Email" 
-            Placeholder="email@email.com" 
+        <component:InputComponent
+            Title="{x:Static resourceFile:ResourceTexts.TITLE_EMAIL}"
+            Placeholder="email@email.com"
             Keyboard="Email"
             Margin="0,40,0,30"/>
 
-        <component:InputPasswordComponent/>
-        
-        <Label Text="Esqueceu sua Senha?" Style="{StaticResource HighLight}"
+        <component:InputPasswordComponent Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}"/>
+
+        <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_FORGOT_YOUR_PASSWORD}" Style="{StaticResource HighLight}"
                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                Margin="0,40,0,70" HorizontalOptions="End"/>
-        
-        <Button Text="Login"/>
+
+        <Button Text="{x:Static resourceFile:ResourceTexts.PHRASE_DO_LOGIN}"/>
     </VerticalStackLayout>
 </ContentPage>
