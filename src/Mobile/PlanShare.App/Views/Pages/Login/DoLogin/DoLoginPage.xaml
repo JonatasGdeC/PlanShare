@@ -6,20 +6,23 @@
              xmlns:resourceFile="clr-namespace:PlanShare.App.Resources"
              x:Class="PlanShare.App.Views.Pages.Login.DoLogin.DoLoginPage">
     <VerticalStackLayout>
-        <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_LOGIN}" Style="{StaticResource Title}"/>
+        <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_LOGIN}" Style="{StaticResource Title}" />
 
         <component:InputComponent
             Title="{x:Static resourceFile:ResourceTexts.TITLE_EMAIL}"
             Placeholder="email@email.com"
             Keyboard="Email"
-            Margin="0,40,0,30"/>
+            Margin="0,40,0,30" />
 
-        <component:InputPasswordComponent Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}"/>
+        <component:InputPasswordComponent Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}" />
 
-        <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_FORGOT_YOUR_PASSWORD}" Style="{StaticResource HighLight}"
-               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
-               Margin="0,40,0,70" HorizontalOptions="End"/>
+        <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_FORGOT_YOUR_PASSWORD}"
+               Style="{StaticResource HighLight}"
+               TextColor="{AppThemeBinding 
+                   Light={StaticResource PRIMARY_COLOR_LIGHT}, 
+                   Dark={StaticResource PRIMARY_COLOR_DARK}}"
+               Margin="0,40,0,70" HorizontalOptions="End" />
 
-        <Button Text="{x:Static resourceFile:ResourceTexts.PHRASE_DO_LOGIN}"/>
+        <Button Text="{x:Static resourceFile:ResourceTexts.PHRASE_DO_LOGIN}" />
     </VerticalStackLayout>
 </ContentPage>
