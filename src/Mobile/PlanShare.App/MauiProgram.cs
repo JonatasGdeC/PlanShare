@@ -1,6 +1,8 @@
-﻿using Microsoft.Maui.Handlers;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Maui.Handlers;
 using PlanShare.App.Constants;
 using PlanShare.App.Navigation;
+using PlanShare.App.Resources.Styles.Handlers;
 using PlanShare.App.Views.Pages.Login.DoLogin;
 using PlanShare.App.Views.Pages.User.Register;
 
@@ -13,19 +15,10 @@ public static class MauiProgram
         MauiAppBuilder builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .AddPages()
-            .AddFonts();
-
-        builder.ConfigureMauiHandlers(handlers =>
-        {
-            EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
-            {
-                #if ANDROID
-                    handler.PlatformView.Background = null;
-                #endif
-            });
-        });
-
+            .AddFonts()
+            .ConfigureMauiHandlers(configureDelegate: _ => AddHandlers());
         return builder.Build();
     }
     
@@ -37,7 +30,7 @@ public static class MauiProgram
         return appBuilder;
     }
     
-    private static void AddFonts(this MauiAppBuilder appBuilder)
+    private static MauiAppBuilder AddFonts(this MauiAppBuilder appBuilder)
     {
         appBuilder.ConfigureFonts(configureDelegate: fonts =>
         {
@@ -47,5 +40,12 @@ public static class MauiProgram
             fonts.AddFont(filename: "WorkSans-Black.ttf", alias: FontFamily.SECONDARY_FONT_BLACK);
             fonts.AddFont(filename: "WorkSans-Regular.ttf", alias: FontFamily.SECONDARY_FONT_REGULAR);
         });
+        
+        return appBuilder;
+    }
+
+    private static void AddHandlers()
+    {
+        CustomEntryHandler.Customize();
     }
 }
