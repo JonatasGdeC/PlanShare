@@ -51,9 +51,13 @@ public class RegisterUserUseCase(
 
         bool emailExist = await userReadOnlyRepository.ExistActiveUserWithEmail(email: request.Email);
         if (emailExist)
+        {
             result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
+        }
 
         if (result.IsValid.IsFalse())
+        {
             throw new ErrorOnValidationException(listErrors: result.Errors.Select(selector: e => e.ErrorMessage).ToList());
+        }
     }
 }

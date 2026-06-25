@@ -14,7 +14,9 @@ public class CultureMiddleware(RequestDelegate next)
         CultureInfo cultureInfo = new CultureInfo(name: "en");
 
         if (culture.NotEmpty() && supportedLanguages.Any(predicate: s => s.Name.Equals(value: culture)))
+        {
             cultureInfo = new CultureInfo(name: culture);
+        }
 
         CultureInfo.CurrentCulture = cultureInfo;
         CultureInfo.CurrentUICulture = cultureInfo;

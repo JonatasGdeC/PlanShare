@@ -19,9 +19,13 @@ internal sealed class PersonAssociationRepository(PlanShareDbContext dbContext) 
         foreach (PersonAssociation association in associations)
         {
             if(association.PersonId == user.Id)
+            {
                 response.Add(item: association.AssociatedPerson);
+            }
             else
+            {
                 response.Add(item: association.Person);
+            }
         }
 
         return response;

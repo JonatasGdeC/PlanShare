@@ -16,7 +16,9 @@ public class DashboardController : ControllerBase
         ResponseDashboardJson response = await useCase.Execute();
 
         if (response.Friends.Count == 0 && response.WorkItems.Count == 0)
+        {
             return NoContent();
+        }
 
         return Ok(value: response);
     }

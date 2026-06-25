@@ -11,9 +11,13 @@ public class ExceptionFilter : IExceptionFilter
     public void OnException(ExceptionContext context)
     {
         if (context.Exception is PlanShareException planShareException)
+        {
             HandleProjectException(planShareException: planShareException, context: context);
+        }
         else
+        {
             ThrowUnknowError(context: context);
+        }
     }
 
     private static void HandleProjectException(PlanShareException planShareException, ExceptionContext context)

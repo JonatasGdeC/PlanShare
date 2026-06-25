@@ -41,7 +41,9 @@ public class UpdateUserUseCase(
         {
             bool userExist = await userReadOnlyRepository.ExistActiveUserWithEmail(email: request.Email);
             if (userExist)
+            {
                 result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
+            }
         }
 
         if (result.IsValid.IsFalse())

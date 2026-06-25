@@ -18,7 +18,9 @@ public class GetByIdWorkItemUseCase(
 
         Domain.Entities.WorkItem? workItem = await repository.GetById(user: loggedUser, id: workItemId);
         if (workItem is null)
+        {
             throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
+        }
 
         return mapper.Map<ResponseWorkItemJson>(source: workItem);
     }

@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi;
+using PlanShare.Api.Converters;
 using PlanShare.Api.Filters;
 using PlanShare.Api.Middleware;
 using PlanShare.Api.Token;
@@ -14,7 +15,8 @@ using PlanShare.Infrastructure.Migrations;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args: args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(configure: options => options.JsonSerializerOptions.Converters.Add(item: new StringConverter()));
 
 builder.Services.AddOpenApi();
 

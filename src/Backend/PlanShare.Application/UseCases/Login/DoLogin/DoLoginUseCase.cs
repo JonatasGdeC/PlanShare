@@ -18,12 +18,16 @@ public class DoLoginUseCase(
         Domain.Entities.User? user = await repository.GetUserByEmail(email: request.Email);
 
         if (user is null)
+        {
             throw new InvalidLoginException();
+        }
 
         bool passwordMatch = passwordEncripter.IsValid(password: request.Password, passwordHash: user.Password);
 
         if (passwordMatch == false)
+        {
             throw new InvalidLoginException();
+        }
 
         TokensDto tokens = await tokenService.GenerateTokens(user: user);
 

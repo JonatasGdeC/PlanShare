@@ -19,7 +19,9 @@ public class DeleteWorkItemUseCase(
         Domain.Entities.WorkItem? workItem = await repositoryRead.GetById(user: loggedUser, id: workItemId);
 
         if(workItem is null)
+        {
             throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
+        }
 
         await repositoryWrite.Delete(id: workItemId);
 

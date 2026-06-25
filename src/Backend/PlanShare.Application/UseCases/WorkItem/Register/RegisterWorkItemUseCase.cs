@@ -33,6 +33,8 @@ public class RegisterWorkItemUseCase(IMapper mapper, IUnitOfWork unitOfWork, IWo
         ValidationResult? result = new RegisterWorkItemValidator().Validate(instance: request);
 
         if (result.IsValid.IsFalse())
+        {
             throw new ErrorOnValidationException(listErrors: result.Errors.Select(selector: e => e.ErrorMessage).ToList());
+        }
     }
 }

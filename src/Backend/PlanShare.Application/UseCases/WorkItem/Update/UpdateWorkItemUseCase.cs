@@ -24,7 +24,9 @@ public class UpdateWorkItemUseCase(
 
         Domain.Entities.WorkItem? workItem = await repository.GetById(user: loggedUser, id: workItemId);
         if (workItem is null)
+        {
             throw new NotFoundException(mensagem: ResourceMessagesException.WORK_ITEM_NOT_FOUND);
+        }
 
         mapper.Map(source: request, destination: workItem);
 
@@ -38,6 +40,8 @@ public class UpdateWorkItemUseCase(
         ValidationResult? result = new UpdateWorkItemValidator().Validate(instance: request);
 
         if (result.IsValid.IsFalse())
+        {
             throw new ErrorOnValidationException(listErrors: result.Errors.Select(selector: e => e.ErrorMessage).ToList());
+        }
     }
 }

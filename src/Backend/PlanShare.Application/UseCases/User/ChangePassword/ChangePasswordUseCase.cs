@@ -39,7 +39,9 @@ public class ChangePasswordUseCase(
         bool passwordMatch = passwordEncripter.IsValid(password: request.Password, passwordHash: loggedUser.Password);
 
         if (passwordMatch.IsFalse())
+        {
             result.Errors.Add(item: new ValidationFailure(propertyName: string.Empty, errorMessage: ResourceMessagesException.PASSWORD_DIFFERENT_CURRENT_PASSWORD));
+        }
 
         if (result.IsValid.IsFalse())
         {

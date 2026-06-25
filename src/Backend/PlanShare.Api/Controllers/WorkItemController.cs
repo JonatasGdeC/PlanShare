@@ -56,7 +56,9 @@ public class WorkItemController : ControllerBase
     {
         ResponseWorkItemsJson result = await useCase.Execute();
         if(result.WorkItems.Count == 0)
+        {
             return NoContent();
+        }
 
         return Ok(value: result);
     }
