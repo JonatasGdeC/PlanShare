@@ -7,7 +7,6 @@
              xmlns:resourceFile="clr-namespace:PlanShare.App.Resources"
              x:DataType="viewModel:OnBoardingViewModel"
              Shell.NavBarIsVisible="False">
-
     <VerticalStackLayout>
 
         <Image Source="hero_image.png" />

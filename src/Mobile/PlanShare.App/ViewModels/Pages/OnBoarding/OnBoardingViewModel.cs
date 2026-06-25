@@ -3,10 +3,10 @@ using PlanShare.App.Navigation;
 
 namespace PlanShare.App.ViewModels.Pages.OnBoarding;
 
-public partial class OnBoardingViewModel
+public partial class OnBoardingViewModel(INavigationService navigationService) : ViewModelBase
 {
     [RelayCommand]
-    private async Task LoginWithEmailAndPasswords() => await Shell.Current.GoToAsync(state: RoutePages.LOGIN_PAGE);
+    private async Task LoginWithEmailAndPasswords() => await navigationService.GoToAsync(state: RoutePages.LOGIN_PAGE);
 
     [RelayCommand]
     private void LoginWithGoogle()
@@ -15,5 +15,5 @@ public partial class OnBoardingViewModel
     }
 
     [RelayCommand]
-    private async Task RegisterUser() => await Shell.Current.GoToAsync(state: RoutePages.USER_REGISTER_PAGE);
+    private async Task RegisterUser() => await navigationService.GoToAsync(state: RoutePages.USER_REGISTER_PAGE);
 }

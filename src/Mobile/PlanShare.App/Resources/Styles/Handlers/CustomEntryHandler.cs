@@ -15,8 +15,8 @@ public static class CustomEntryHandler
             Color lineColor = Application.Current!.GetLineColor();
 
 #if ANDROID
-            handler?.PlatformView?.TextCursorDrawable?.SetTint(tintColor: cursorColor.ToPlatform());
-            handler?.PlatformView?.Background?.SetTint(tintColor: lineColor.ToPlatform());
+            handler.PlatformView.TextCursorDrawable?.SetTint(tintColor: cursorColor.ToPlatform());
+            handler.PlatformView.Background?.SetTint(tintColor: lineColor.ToPlatform());
 #elif IOS || MACCATALYST
             handler.PlatformView.Layer.BorderColor = lineColor.ToCGColor();
             handler.PlatformView.Layer.BorderWidth = 0.7f;

@@ -29,7 +29,8 @@
 
         <component:InputPasswordComponent Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}"/>
 
-        <Button Text="{x:Static resourceFile:ResourceTexts.TITLE_REGISTER_MY_ACCOUNT}" Style="{StaticResource ButtonCreateUser}" Margin="0,70"/>
+        <Button Text="{x:Static resourceFile:ResourceTexts.TITLE_REGISTER_MY_ACCOUNT}" 
+                Style="{StaticResource ButtonCreateUser}" Margin="0,70"/>
 
         <HorizontalStackLayout HorizontalOptions="Center">
             <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_ALREADY_HAS_ACCOUNT}"/>

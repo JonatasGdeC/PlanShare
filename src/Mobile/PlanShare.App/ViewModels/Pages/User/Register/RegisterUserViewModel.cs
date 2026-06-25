@@ -3,8 +3,8 @@ using PlanShare.App.Navigation;
 
 namespace PlanShare.App.ViewModels.Pages.User.Register;
 
-public partial class RegisterUserViewModel
+public partial class RegisterUserViewModel(INavigationService navigationService) : ViewModelBase
 {
     [RelayCommand]
-    private async Task LoginWithEmailAndPasswords() => await Shell.Current.GoToAsync(state: $"../{RoutePages.LOGIN_PAGE}");
+    private async Task LoginWithEmailAndPasswords() => await navigationService.GoToAsync(state: $"../{RoutePages.LOGIN_PAGE}");
 }

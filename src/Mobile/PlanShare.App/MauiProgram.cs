@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Maui.Handlers;
 using PlanShare.App.Constants;
 using PlanShare.App.Navigation;
 using PlanShare.App.Resources.Styles.Handlers;
+using PlanShare.App.ViewModels.Pages.Login.DoLogin;
+using PlanShare.App.ViewModels.Pages.OnBoarding;
+using PlanShare.App.ViewModels.Pages.User.Register;
 using PlanShare.App.Views.Pages.Login.DoLogin;
 using PlanShare.App.Views.Pages.User.Register;
 
@@ -24,8 +26,11 @@ public static class MauiProgram
     
     private static MauiAppBuilder AddPages(this MauiAppBuilder appBuilder)
     {
-        Routing.RegisterRoute(route: RoutePages.LOGIN_PAGE, type: typeof(DoLoginPage));
-        Routing.RegisterRoute(route: RoutePages.USER_REGISTER_PAGE, type: typeof(RegisterUserPage));
+        appBuilder.Services.AddSingleton<INavigationService, NavigationService>();
+        
+        appBuilder.Services.AddTransient<OnBoardingViewModel>();
+        appBuilder.Services.AddTransientWithShellRoute<DoLoginPage, DoLoginViewModel>(route: RoutePages.LOGIN_PAGE);
+        appBuilder.Services.AddTransientWithShellRoute<RegisterUserPage, RegisterUserViewModel>(route: RoutePages.USER_REGISTER_PAGE);
         
         return appBuilder;
     }
