@@ -4,7 +4,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:component="clr-namespace:PlanShare.App.Views.Components.Input;assembly=PlanShare.App"
              xmlns:resourceFile="clr-namespace:PlanShare.App.Resources"
-             x:Class="PlanShare.App.Views.Pages.Login.DoLogin.DoLoginPage">
+             xmlns:viewModel="clr-namespace:PlanShare.App.ViewModels.Pages.Login.DoLogin"
+             x:Class="PlanShare.App.Views.Pages.Login.DoLogin.DoLoginPage"
+             x:DataType="viewModel:DoLoginViewModel">
     <VerticalStackLayout>
         <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_LOGIN}" Style="{StaticResource Title}" />
 
@@ -12,9 +14,12 @@
             Title="{x:Static resourceFile:ResourceTexts.TITLE_EMAIL}"
             Placeholder="email@email.com"
             Keyboard="Email"
-            Margin="0,40,0,30" />
+            Margin="0,40,0,30" 
+            Text="{Binding Model.Email}"/>
 
-        <component:InputPasswordComponent Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}" />
+        <component:InputPasswordComponent 
+            Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}" 
+            Text="{Binding Model.Password}"/>
 
         <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_FORGOT_YOUR_PASSWORD}"
                Style="{StaticResource HighLight}"
@@ -23,6 +28,7 @@
                    Dark={StaticResource PRIMARY_COLOR_DARK}}"
                Margin="0,40,0,70" HorizontalOptions="End" />
 
-        <Button Text="{x:Static resourceFile:ResourceTexts.PHRASE_DO_LOGIN}" />
+        <Button Text="{x:Static resourceFile:ResourceTexts.PHRASE_DO_LOGIN}"
+                Clicked="{Binding DoLoginCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

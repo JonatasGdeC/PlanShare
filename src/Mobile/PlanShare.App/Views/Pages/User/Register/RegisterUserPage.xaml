@@ -19,18 +19,23 @@
 
         <component:InputComponent
             Title="{x:Static resourceFile:ResourceTexts.TITLE_NAME}"
-            Placeholder="Seu nome"/>
+            Placeholder="Seu nome"
+            Text="{Binding Model.Name}" />
 
         <component:InputComponent
             Title="{x:Static resourceFile:ResourceTexts.TITLE_EMAIL}"
             Placeholder="email@email.com"
             Keyboard="Email"
-            Margin="0,30,0,30"/>
+            Margin="0,30,0,30"
+            Text="{Binding Model.Email}"/>
 
-        <component:InputPasswordComponent Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}"/>
+        <component:InputPasswordComponent 
+            Title="{x:Static resourceFile:ResourceTexts.TITLE_PASSWORD}"
+            Text="{Binding Model.Password}"/>
 
         <Button Text="{x:Static resourceFile:ResourceTexts.TITLE_REGISTER_MY_ACCOUNT}" 
-                Style="{StaticResource ButtonCreateUser}" Margin="0,70"/>
+                Style="{StaticResource ButtonCreateUser}" Margin="0,70"
+                Clicked="{Binding LoginWithEmailAndPasswordsCommand}"/>
 
         <HorizontalStackLayout HorizontalOptions="Center">
             <Label Text="{x:Static resourceFile:ResourceTexts.PHRASE_ALREADY_HAS_ACCOUNT}"/>

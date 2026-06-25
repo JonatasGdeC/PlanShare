@@ -11,6 +11,9 @@ public partial class InputComponent : ContentView
     public Keyboard Keyboard { get => (Keyboard)GetValue(property: KeyboardProperty); set => SetValue(property: KeyboardProperty, value: value); }
     private static readonly BindableProperty KeyboardProperty = BindableProperty.Create(propertyName: nameof(Keyboard), returnType: typeof(Keyboard), declaringType: typeof(InputComponent), defaultValue: Keyboard.Default);
     
+    public string Text { get => (string)GetValue(property: TextProperty); set => SetValue(property: TextProperty, value: value); }
+    private static readonly BindableProperty TextProperty = BindableProperty.Create(propertyName: nameof(Text), returnType: typeof(string), declaringType: typeof(InputComponent), defaultValue: string.Empty, defaultBindingMode: BindingMode.TwoWay);
+    
     public InputComponent()
 	{
 		InitializeComponent();
